@@ -120,7 +120,7 @@
                         <td class="th_product"><?php
                             echo $order_detail[$i]['name'];
                             if (sub_businesses() != "") {
-                                echo '<p>' . $order_detail[$i]['product_business_name'] . "</p>";
+                                echo '<p>' . $order_detail[$i]['product_business_name'] . '</p>';
                             }
                             foreach ($order_detail[$i]['option_ids'] as $option) {
                                 ?>
@@ -379,7 +379,7 @@
                 </a>
                 <script>
                     document.querySelector('#button_complete').onclick = function () {
-                        $("#button_complete").html('<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>COMPlETE');
+                        $("#button_complete").html('<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>COMPLETE');
                         var order_id = $("#order_id").val();
                         var param = {order_id: order_id};
                         $.post("<?php echo base_url('index.php/site/completedorder') ?>", param)

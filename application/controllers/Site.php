@@ -102,7 +102,12 @@ class Site extends CI_Controller {
             $order_detail['orderlist'][0]['pd_charge_amount'] = 0;
             $order_detail['orderlist'][0]['promotion_code'] ="";
             $order_detail['orderlist'][0]['promotion_discount_amount'] = 0;
-
+            $order_detail['orderlist'][0]['subtotal'] = 0;
+            $order_detail['orderlist'][0]['tax_amount'] = 0;
+            $order_detail['orderlist'][0]['sms_no'] = 0;
+            $order_detail['orderlist'][0]['tip_amount'] = 0;
+            $order_detail['orderlist'][0]['total'] = 0;
+            $order_detail['orderlist'][0]['points_dollar_amount'] = 0;
 
             $order_detail['orderlist'][0][''] ="";
 

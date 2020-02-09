@@ -237,6 +237,8 @@
                         var order_id = $("#order_id").val();
                         var amout = $("#order_amount").val();
                         var param = {order_id: order_id};
+                        $("#button_approve").remove();
+
                         $.post("<?php echo base_url('index.php/site/approve') ?>", param)
                                 .done(function (data) {
                                     data = jQuery.parseJSON(data);

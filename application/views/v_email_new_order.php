@@ -337,14 +337,14 @@ $parent_url =  dirname(base_url()) ."/";
                                             ?></p>
                                     </td>
                                 </tr>
-                            
+
                             <?php } ?>
                                 <tr style="line-height: 0;">
                                     <td  colspan="2">
 
                                         <p style="font-weight: bold;font-size: 21px;margin-left: 10px;text-align: center"><a href="<?php echo $parent_url."".$order_detail[0]['main_business_name']; ?>" target="_blank" >View</a></p>
                                     </td>
-                                   
+
                                 </tr>
                         </table>
                     </td>
@@ -371,7 +371,21 @@ $parent_url =  dirname(base_url()) ."/";
                             </tr>
                             <tr bgcolor="#EBEBEB" >
                                 <td bgcolor="#EBEBEB">
-                                    <p style="padding-left: 15px"><span style="color:#4DBEC7">PAID</span> Visa XXXX XXXX XXXX <?php echo substr($cc_no, -4) . " " . $exp_month . "/" . $exp_year; ?></p>
+                                    <?php
+                                        if (isset($cc_no)) {
+                                            $cc_no_last4 = substr($cc_no, -4);
+                                        } else {
+                                            $cc_no_last4 = "";
+                                        }
+
+                                        if (!isset($exp_month)) {
+                                            $exp_month = "";
+                                        }
+                                        if (!isset($exp_year)) {
+                                            $exp_year = "";
+                                        }
+                                    ?>
+                                    <p style="padding-left: 15px"><span style="color:#4DBEC7">PAID</span> Visa XXXX XXXX XXXX <?php echo $cc_no_last4 . " " . $exp_month . "/" . $exp_year; ?></p>
 
                                 </td>
                                 <td></td>
@@ -392,6 +406,7 @@ $parent_url =  dirname(base_url()) ."/";
                             </tr>
                             <tr>
                                 <td style="padding: 5px"><span style="color:#4DBEC7"><img src="<?php echo base_url('assets/email_templete/ic_rewards@3x.png'); ?>" width="30" height="30"></img></span></td>
+                                <?php if (!isset($redeem_points)) $redeem_points =0; ?>
                                 <td style="padding: 5px"><span style="color:#4DBEC7">You Redeemed <?php echo $redeem_points; ?> Reward Points</span></td>
                             </tr>
                             <tr>

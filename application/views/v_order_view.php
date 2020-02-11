@@ -237,11 +237,11 @@
                         var order_id = $("#order_id").val();
                         var amout = $("#order_amount").val();
                         var param = {order_id: order_id};
-                        $("#button_approve").remove();
 
-                        $.post("<?php echo base_url('index.php/site/approve') ?>", param)
+                        $.post("<?php echo base_url('index.php/Site/approve') ?>", param)
                                 .done(function (data) {
                                     data = jQuery.parseJSON(data);
+                                    alert(data['status']);
                                     if (data['status'] == '1')
                                     {
                                         $("#button_approve").remove();
@@ -259,7 +259,7 @@
                                         swal("$" + amout, data['msg'], "error");
                                     }
                                 });
-                                setTimeout(function(){ get_remaining_approval_order(); }, 3000);
+                        setTimeout(function(){ get_remaining_approval_order(); }, 3000);
                     };
                 </script>
                 &nbsp;

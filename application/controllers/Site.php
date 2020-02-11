@@ -209,9 +209,9 @@ class Site extends CI_Controller {
                                 $token = \Stripe\Token::create(['card'=>$cardInfo]);
 
                                 $card = $stripeCustomer->sources->create(['source' => $token]);
-                                $card_id =$card[id];
-                                $fingerprint = $token[card][fingerprint];
-                                $stripeCustomerID = $stripeCustomer[id];
+                                $card_id =$card['id'];
+                                $fingerprint = $token['card']['fingerprint'];
+                                $stripeCustomerID = $stripeCustomer['id'];
                             } else {
                                 $stripeCustomerID =
                                     $order_payment_detail['cc_info']['stripe_consumer_id'];

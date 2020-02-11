@@ -67,8 +67,8 @@ class Login extends CI_Controller {
         } else {
             redirect('index.php/login');
         }
-        
-        
+
+
     }
 
 }

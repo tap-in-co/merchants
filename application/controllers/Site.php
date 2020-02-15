@@ -165,7 +165,8 @@ class Site extends CI_Controller {
     }
 
     function approve() {
-        echo ($this->payment());
+        $result = $this->payment();
+        echo ($result);
     }
 
     function payment() {
@@ -435,22 +436,24 @@ class Site extends CI_Controller {
     }
 
     function mail_receipt($data, $email) {
-        $this->email_configration();
+//        $this->email_configration();
         $body = $this->load->view('v_email_receipt', $data, TRUE);
         $subject = "Your Order Receipt";
-        $this->email->to($email);
-        $this->email->subject($subject);
-        $this->email->message($body);
+//        $this->email->to($email);
+//        $this->email->subject($subject);
+//        $this->email->message($body);
 
-        if($this->email->send()) {
-            $this->session->set_flashdata("email_sent", "Email sent successfully.");
-            log_message('info', "Email to $email was sent successfully!");
-        }
-        else {
-            $this->session->set_flashdata("email_sent", "Error in sending Email.");
-            log_message('error', "Email to $email could not be sent!");
-            echo $this->email->print_debugger();
-        }
+        sendGridEmail($subject, $body, "Tap In", "tap-in@tapforall.com", $email);
+
+//        if($this->email->send()) {
+//            $this->session->set_flashdata("email_sent", "Email sent successfully.");
+//            log_message('info', "Email to $email was sent successfully!");
+//        }
+//        else {
+//            $this->session->set_flashdata("email_sent", "Error in sending Email.");
+//            log_message('error', "Email to $email could not be sent!");
+//            echo $this->email->print_debugger();
+//        }
 
     }
 

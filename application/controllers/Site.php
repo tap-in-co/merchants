@@ -1,53 +1,61 @@
 <?php
+
 use Stripe\Error\Card;
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 
-class Site extends CI_Controller {
+class Site extends CI_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 ////////////DEFAULT LOAD BELOW FUNCTIONLITY WHEN CALL V1 CONTROLLER
 /////// LOAD LIBRARY VALIDATION CLASS
         $this->load->library('validation');
 ///// LOAD MODEL CLASS
         $this->load->model('m_site');
-////// RESPONSE HEADER CONTENT TYPE SET FROM DEFAULT(TEXT/HTML) TO APPLICATION/JSON
+    ////// RESPONSE HEADER CONTENT TYPE SET FROM DEFAULT(TEXT/HTML) TO APPLICATION/JSON
     }
 
-    function index() {
+    function index()
+    {
 ///// DEFAULT SITE CONTROLLER METHOD CALL
         $data['business_list'] = $this->m_site->get_business_list();
         $this->load->view('v_home', $data);
     }
 
-    function cronjob_for_send_sms_or_email_or_push_notificaiton() {
+    function cronjob_for_send_sms_or_email_or_push_notificaiton()
+    {
         $this->m_site->cronjob_for_send_sms_or_email_or_push_notificaiton();
-           $files2 = scandir('/home2/artdoost', 1);
-        for($i=0;$i<count($files2);$i++){
-            $cron_file[$i]=explode(".", $files2[$i]);
-            if($cron_file[$i][0]=="cronjob_for_send_sms_or_email_or_push_notificaiton" || $cron_file[$i][0]=="cron_sms" ){
-                unlink("/home2/artdoost/".$files2[$i]);
+        $files2 = scandir('/home2/artdoost', 1);
+        for ($i = 0; $i < count($files2); $i++) {
+            $cron_file[$i] = explode(".", $files2[$i]);
+            if ($cron_file[$i][0] == "cronjob_for_send_sms_or_email_or_push_notificaiton" || $cron_file[$i][0] == "cron_sms") {
+                unlink("/home2/artdoost/" . $files2[$i]);
             }
         }
     }
 
-    function send_sms() {
+    function send_sms()
+    {
         $param = $_REQUEST;
         $response = $this->m_site->send_sms($param);
         echo json_encode($response);
     }
 
-    function admin() {
+    function admin()
+    {
 //Check business Customer is login
 //        is_login() ? '' : redirect('index.php/login');
         $data = array();
         $this->load->view('v_admin', $data);
     }
 
-    function orderlist($order_status = "neworder") {
+    function orderlist($order_status = "neworder")
+    {
 //Check business Customer is login
         is_login() ? '' : redirect('index.php/login');
         $param['businessID'] = is_login();
@@ -65,16 +73,16 @@ class Site extends CI_Controller {
         } else {
             // there no orders so init the array
             $data['orderlist'][0]['order_id'] = "";
-            $data['orderlist'][0]['payment_id'] ="";
+            $data['orderlist'][0]['payment_id'] = "";
             $data['orderlist'][0]['total'] = 0.0;
-            $data['orderlist'][0]['date'] ="";
-            $data['orderlist'][0]['no_items']=0;
+            $data['orderlist'][0]['date'] = "";
+            $data['orderlist'][0]['no_items'] = 0;
             $data['orderlist'][0]['status'] = 0;
-            $data['orderlist'][0]['nickname'] ="";
-            $data['orderlist'][0]['seconds'] =0;
+            $data['orderlist'][0]['nickname'] = "";
+            $data['orderlist'][0]['seconds'] = 0;
             $data['orderlist'][0]['is_refunded'] = 0;
-            $data['orderlist'][0]['order_type'] =0;
-            $data['orderlist'][0]['uid'] ="";
+            $data['orderlist'][0]['order_type'] = 0;
+            $data['orderlist'][0]['uid'] = "";
 
             $order_detail[0]['order_item_id'] = "";
             $order_detail[0]['price'] = 0.0;
@@ -89,18 +97,18 @@ class Site extends CI_Controller {
             $order_detail[0]['product_business_name'] = "";
 
             // $order_detail['order_detail'] = array();
-            $order_detail['orderlist'][0]['uid']  =   "";
+            $order_detail['orderlist'][0]['uid'] = "";
             $order_detail['orderlist'][0]['seconds'] = 0;
-            $order_detail['orderlist'][0]['uid']  =   "";
+            $order_detail['orderlist'][0]['uid'] = "";
             $order_detail['orderlist'][0]['status'] = 0;
             $order_detail['orderlist'][0]['no_items'] = 0;
             $order_detail['orderlist'][0]['nickname'] = "";
             $order_detail['orderlist'][0]['order_id'] = "";
             $order_detail['orderlist'][0]['note'] = "";
             $order_detail['orderlist'][0]['pd_mode'] = 0;
-            $order_detail['orderlist'][0]['delivery_charge_amount'] =0.0;
+            $order_detail['orderlist'][0]['delivery_charge_amount'] = 0.0;
             $order_detail['orderlist'][0]['pd_charge_amount'] = 0;
-            $order_detail['orderlist'][0]['promotion_code'] ="";
+            $order_detail['orderlist'][0]['promotion_code'] = "";
             $order_detail['orderlist'][0]['promotion_discount_amount'] = 0;
             $order_detail['orderlist'][0]['subtotal'] = 0;
             $order_detail['orderlist'][0]['tax_amount'] = 0;
@@ -109,19 +117,17 @@ class Site extends CI_Controller {
             $order_detail['orderlist'][0]['total'] = 0;
             $order_detail['orderlist'][0]['points_dollar_amount'] = 0;
 
-            $order_detail['orderlist'][0][''] ="";
-
-
+            $order_detail['orderlist'][0][''] = "";
 
 
             $order_detail['consumer']['is_first_order'] = 0;
             $order_detail['consumer']['is_birthday'] = 0;
-            $order_detail['order_detail'][0]['businessID']="";
-            $order_detail['order_detail'][0]['option_ids'] =array();
-            $order_detail['order_detail'][0]['name'] ="";
-            $order_detail['order_detail'][0]['item_note'] ="";
-            $order_detail['order_detail'][0]['price'] =0;
-            $order_detail['order_detail'][0]['quantity'] =0;
+            $order_detail['order_detail'][0]['businessID'] = "";
+            $order_detail['order_detail'][0]['option_ids'] = array();
+            $order_detail['order_detail'][0]['name'] = "";
+            $order_detail['order_detail'][0]['item_note'] = "";
+            $order_detail['order_detail'][0]['price'] = 0;
+            $order_detail['order_detail'][0]['quantity'] = 0;
             // $order_detail['consumer'] = array();
 //            $data['orderlist'] = null;
         }
@@ -131,7 +137,8 @@ class Site extends CI_Controller {
 
     }
 
-    function search_orderlist($keyword = "") {
+    function search_orderlist($keyword = "")
+    {
 //Check business Customer is login
         is_login() ? '' : redirect('index.php/login');
         $param = $_REQUEST;
@@ -149,8 +156,9 @@ class Site extends CI_Controller {
         $this->load->view('v_orderlist', $data);
     }
 
-    function order_view() {
-//Check business Customer is login
+    function order_view()
+    {
+        //Check business Customer is login
         is_login() ? '' : redirect('index.php/login');
         $param = $_REQUEST;
         $order_id = $param['order_id'];
@@ -164,12 +172,16 @@ class Site extends CI_Controller {
         echo json_encode($return);
     }
 
-    function approve() {
+    function approve()
+    {
         $result = $this->payment();
-        echo ($result);
+        // we are passing this to the view so let's set the content type accordingly
+        header('Content-Type: application/json');
+        echo json_encode($result);
     }
 
-    function payment() {
+    function payment()
+    {
 //Check business Customer is login
         is_login() ? '' : redirect('index.php/login');
         $param = $_REQUEST;
@@ -189,14 +201,14 @@ class Site extends CI_Controller {
                 } else {
                     // require_once('lib/stripe/stripe-php/init.php');
                     \Stripe\Stripe::setApiKey($secret_key);
-                    $stripeCustomer=$order_payment_detail['cc_info']['stripe_consumer_id'];
+                    $stripeCustomer = $order_payment_detail['cc_info']['stripe_consumer_id'];
                     if (empty($stripeCustomer)) {
                         $stripeCustomer = \Stripe\Customer::create([
-                        // 'source' => 'tok_visa',
-                        'id' => $order_payment_detail['consumer_id']
+                            // 'source' => 'tok_visa',
+                            'id' => $order_payment_detail['consumer_id']
                         ]);
                     } else {
-                        $stripeCustomer= \Stripe\Customer::retrieve($order_payment_detail['consumer_id']);
+                        $stripeCustomer = \Stripe\Customer::retrieve($order_payment_detail['consumer_id']);
                     }
 
                     try {
@@ -207,10 +219,10 @@ class Site extends CI_Controller {
                                     'exp_month' => $order_payment_detail['cc_info']['month'],
                                     'exp_year' => $order_payment_detail['cc_info']['year'],
                                     'cvc' => $order_payment_detail['cc_info']['cvv']);
-                                $token = \Stripe\Token::create(['card'=>$cardInfo]);
+                                $token = \Stripe\Token::create(['card' => $cardInfo]);
 
                                 $card = $stripeCustomer->sources->create(['source' => $token]);
-                                $card_id =$card['id'];
+                                $card_id = $card['id'];
                                 $fingerprint = $token['card']['fingerprint'];
                                 $stripeCustomerID = $stripeCustomer['id'];
                             } else {
@@ -237,20 +249,20 @@ class Site extends CI_Controller {
                         $this->m_site->update_order_status($order_id, $charge_id, $response['amount'],
                             $order_payment_detail['consumer_id']);
 
-                            //save card token in the databas
+                        //save card token in the databas
                         if (empty($order_payment_detail['cc_info']['stripe_fingerprint'])) {
                             $success_code =
                                 $this->m_site->update_card_info_for_stripe(
-                                $order_payment_detail['consumer_id'],
-                                $order_payment_detail['cc_info']['cc_no'],
-                                $card_id,$fingerprint);
-                            $Success_code = $this ->m_site->maskCardInfoFor(
+                                    $order_payment_detail['consumer_id'],
+                                    $order_payment_detail['cc_info']['cc_no'],
+                                    $card_id, $fingerprint);
+                            $Success_code = $this->m_site->maskCardInfoFor(
                                 $order_payment_detail['consumer_id'], $order_payment_detail['cc_info']['cc_no']
                             );
                         }
 
                         $order_info = $this->m_site->get_ordelist_order($order_id, $order_payment_detail['order_type']
-                            ,$business_id, $param['sub_businesses']);
+                            , $business_id, $param['sub_businesses']);
                         $email['order_detail'] = $this->m_site->get_order_detail($order_id);
                         $redeemed_points = $this->m_site->get_redeemed_points($order_id);
                         if (count($redeemed_points) > 0) {
@@ -316,15 +328,16 @@ class Site extends CI_Controller {
             // employee later
             if ($order_payment_detail['order_type'] == 1) {
                 $this->m_site->update_order_payment_result($order_id, $response['msg']);
-                $response['msg'] ="Success!";
-                $response['status'] =1;
+                $response['msg'] = "Success!";
+                $response['status'] = 1;
                 $response['amount'] = $order_payment_detail['total'];
             }
         }
         return json_encode($response);
     }
 
-    function notifyMerchant() {
+    function notifyMerchant()
+    {
         is_login() ? '' : redirect('index.php/login');
         $message = "You Have a New Order!";
         $returnVal = $this->m_site->notifyMerchant($message);
@@ -335,25 +348,31 @@ class Site extends CI_Controller {
         echo json_encode($response);
     }
 
-    function completedorder() {
+    function completedorder()
+    {
         is_login() ? '' : redirect('index.php/login');
         $param = $_REQUEST;
         $this->validation->is_parameter_blank('order_id', $param['order_id']);
         $this->m_site->completedorder(decrypt_string($param['order_id']));
         $response = success_res("Successfully completed order");
+
+        // we are passing this to the view so let's set the content type accordingly
+        header('Content-Type: application/json');
         echo json_encode($response);
     }
 
-    function rejectorder() {
+    function rejectorder()
+    {
         is_login() ? '' : redirect('index.php/login');
         $param = $_REQUEST;
         $this->validation->is_parameter_blank('order_id', $param['order_id']);
-        $this->m_site->rejectorder(decrypt_string($param['order_id']),$param['reject_reason']);
+        $this->m_site->rejectorder(decrypt_string($param['order_id']), $param['reject_reason']);
         $response = success_res("Successfully completed order");
         echo json_encode($response);
     }
 
-    function get_stripe_secret_key($business_id) {
+    function get_stripe_secret_key($business_id)
+    {
 
         $paymentInfo = $this->m_site->get_business_stripe_secret_key($business_id);
         if ($paymentInfo != '') {
@@ -363,13 +382,15 @@ class Site extends CI_Controller {
         }
     }
 
-    function get_table_list($order_id) {
+    function get_table_list($order_id)
+    {
         echo '<pre>';
         $tables = $this->m_site->get_table_list($order_id);
         print_r($tables);
     }
 
-    function create_cusomer() {
+    function create_cusomer()
+    {
         require_once('lib/stripe-php-master/init.php');
         \Stripe\Stripe::setApiKey('sk_test_JQCcDe4RIqIq1IcmVfvLPyay ');
         $myCard = array('number' => '4242424242424242', 'exp_month' => 8, 'exp_year' => 2018);
@@ -379,9 +400,10 @@ class Site extends CI_Controller {
         print_r($charge);
     }
 
-    function test_notification() {
+    function test_notification()
+    {
 
-         $param = $_REQUEST;
+        $param = $_REQUEST;
         $device_token = $param['device_token'];
         $message_body = array(
             'type' => 1,
@@ -393,7 +415,8 @@ class Site extends CI_Controller {
         echo json_encode($res);
     }
 
-    function get_new_orders() {
+    function get_new_orders()
+    {
         $param = $_REQUEST;
         $param['sub_businesses'] = sub_businesses();
         $this->validation->is_parameter_blank('latest_order_id', $param['latest_order_id']);
@@ -411,14 +434,19 @@ class Site extends CI_Controller {
         echo json_encode($return);
     }
 
-    function count_order_for_remaining_approve() {
+    function count_order_for_remaining_approve()
+    {
         $param['businessID'] = is_login();
         $param['sub_businesses'] = sub_businesses();
         $response = $this->m_site->count_order_for_remaining_approve($param);
+
+        // we are passing this to the view so let's set the content type accordingly
+        header('Content-Type: application/json');
         echo json_encode($response);
     }
 
-    function email_configration() {
+    function email_configration()
+    {
         $email = "tap-in@tapforall.com";
         $this->load->library('email');
         $config['protocol'] = 'smtp';
@@ -435,7 +463,8 @@ class Site extends CI_Controller {
         $this->email->from($email, 'Tap-in');
     }
 
-    function mail_receipt($data, $email) {
+    function mail_receipt($data, $email)
+    {
 //        $this->email_configration();
         $body = $this->load->view('v_email_receipt', $data, TRUE);
         $subject = "Your Order Receipt";
@@ -457,7 +486,8 @@ class Site extends CI_Controller {
 
     }
 
-    function send_mail_demo() {
+    function send_mail_demo()
+    {
 //        $data['order_detail'] = [array('quantity' => 3, 'name' => 'test', 'short_description' => 'This is short description', 'price' => 6)];
 //        $data['total'] = 10;
 //        $data['order_id'] = 194;
@@ -491,11 +521,13 @@ class Site extends CI_Controller {
         $this->load->view('v_email_receipt', $email);
     }
 
-    function phpinfo() {
+    function phpinfo()
+    {
         echo phpinfo();
     }
 
-    function send_simple_message() {
+    function send_simple_message()
+    {
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
@@ -518,7 +550,8 @@ class Site extends CI_Controller {
         echo 'ok';
     }
 
-    function refund_order_amount() {
+    function refund_order_amount()
+    {
         is_login() ? '' : redirect('index.php/login');
         require_once('lib/stripe-php-master/init.php');
         $param = $_REQUEST;
@@ -627,14 +660,14 @@ class Site extends CI_Controller {
         echo json_encode($response);
     }
 
-function test_android_notification()
+    function test_android_notification()
     {
-        $message['message']="Andorid Notification";
+        $message['message'] = "Andorid Notification";
         $fields = array(
             'to' => 'djTs2gcD_dQ:APA91bEEtwwbUs0ELmEsc5eBN2-9uAV8_gVFuOVNsV-eO7T_dTwmYXlBXfLyx1I7YqXEqTrMiZCOHeRLekB1lJ_b24KPxi0SjlYxw5VDDYr_NMaor1VpeXo21L2f7ZeNK4h6yEH4r-60',
             'data' => $message,
         );
-       define('FIREBASE_API_KEY', 'AIzaSyBninesHBYXsNFDOBkQp4M-K0nL-vYshzs');
+        define('FIREBASE_API_KEY', 'AIzaSyBninesHBYXsNFDOBkQp4M-K0nL-vYshzs');
         // Set POST variables
         $url = 'https://fcm.googleapis.com/fcm/send';
 
@@ -665,8 +698,8 @@ function test_android_notification()
 
         // Close connection
         curl_close($ch);
-      echo "<pre>";
-      print_r($result);
+        echo "<pre>";
+        print_r($result);
     }
 
 }

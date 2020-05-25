@@ -71,4 +71,9 @@ class Login extends CI_Controller {
 
     }
 
+    function set_business_password() {
+        $params = $_REQUEST;
+        $this->m_site->set_business_password($params);
+    }
+
 }

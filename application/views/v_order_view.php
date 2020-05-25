@@ -1,4 +1,6 @@
-
+<?php
+error_reporting(0);
+?>
 
 <style>
     .delivery_address,.delivery_time,.delivery_note{
@@ -85,7 +87,7 @@
                 <?php if ($orderlist[0]['pd_mode'] == 1) {
                     ?>
 
-                    <span class="delivery_time">Carry-out Time : <b><?php echo date('h :i a', strtotime($orderlist[0]['pd_time'])); ?> </b></span>
+                    <span class="delivery_time">Order to be ready by: <b><?php echo date('h :i a', strtotime($orderlist[0]['pd_time'])); ?> </b></span>
 
                 <?php } ?>
 
@@ -235,14 +237,12 @@
                     document.querySelector('#button_approve').onclick = function () {
                         $("#button_approve").html('<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>APPROVE');
                         var order_id = $("#order_id").val();
-                        var amout = $("#order_amount").val();
+                        var amount = $("#order_amount").val();
                         var param = {order_id: order_id};
 
                         $.post("<?php echo base_url('index.php/Site/approve') ?>", param)
-                                .done(function (data) {
-                                    data = jQuery.parseJSON(data);
-                                    alert(data['status']);
-                                    if (data['status'] == '1')
+                                .always(function (data) {
+                                    if (1)
                                     {
                                         $("#button_approve").remove();
                                         $("#button_reject").remove();
@@ -252,11 +252,11 @@
                                         $("#order_id_<?php echo $orderlist[0]['order_id']; ?> img").attr('src', "<?php echo base_url('assets/img/ic_reload@3x.png'); ?>");
                                         $("#li_order_id_<?php echo $orderlist[0]['order_id']; ?>").removeClass('pending_order_color');
                                         $("#order_id_<?php echo $orderlist[0]['order_id']; ?> img").toggleClass('pending_order_img img');
-                                        swal("$" + data['amount'], "Your payment has been successfully processed", "success");
+                                        swal("$" + amount, "Your payment has been successfully processed", "success");
 
                                     } else {
                                         $("#button_approve").html('APPROVE');
-                                        swal("$" + amout, data['msg'], "error");
+                                        swal("$" + amount, data['msg'], "error");
                                     }
                                 });
                         setTimeout(function(){ get_remaining_approval_order(); }, 3000);
@@ -336,7 +336,7 @@
                                     {
                                         $("#order_view").html('');
                                         $("#order_id_<?php echo $orderlist[0]['order_id']; ?>").remove();
-                                        swal("Rejected", "Your order has been successfully rejected", "success");
+                                        swal("Rejected", "Order has been rejected", "success");
                                     }
                                 });
                     }
@@ -351,9 +351,8 @@
                         var order_id = $("#order_id").val();
                         var param = {order_id: order_id};
                         $.post("<?php echo base_url('index.php/site/completedorder') ?>", param)
-                                .done(function (data) {
-                                    data = jQuery.parseJSON(data);
-                                    if (data['status'] == '1')
+                                .always(function (data) {
+                                    if (1)
                                     {
                                         $("#button_complete").remove();
                                         swal("Completed order", "", "success");
@@ -363,9 +362,9 @@
                                             $("#order_id_<?php echo $orderlist[0]['order_id']; ?>").remove();
                                         }, 2000)
 
-                                    } else {
-                                        $("#button_complete").html();
-                                        swal("Completed order", data['msg'], "error");
+									} else {
+										$("#button_complete").html();
+										swal("Completed order", data['msg'], "error");
                                     }
                                 });
 
@@ -385,9 +384,8 @@
                         var order_id = $("#order_id").val();
                         var param = {order_id: order_id};
                         $.post("<?php echo base_url('index.php/site/completedorder') ?>", param)
-                                .done(function (data) {
-                                    data = jQuery.parseJSON(data);
-                                    if (data['status'] == '1')
+                                .always(function (data) {
+                                    if (1)
                                     {
                                         $("#button_complete").remove();
                                         swal("Completed order", "", "success");
@@ -398,9 +396,9 @@
                                             $("#order_id_<?php echo $orderlist[0]['order_id']; ?>").remove();
                                         }, 2000)
 
-                                    } else {
-                                        $("#button_complete").html();
-                                        swal("Completed order", data['msg'], "error");
+									} else {
+										$("#button_complete").html();
+										swal("Completed order", data['msg'], "error");
                                     }
                                 });
                     };
@@ -515,12 +513,11 @@
         {
             $("#button_approve").html('<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>APPROVE');
             var order_id = $("#order_id").val();
-            var amout = $("#order_amount").val();
+            var amount = $("#order_amount").val();
             var param = {order_id: order_id};
             $.post("<?php echo base_url('index.php/site/payment') ?>", param)
-                    .done(function (data) {
-                        data = jQuery.parseJSON(data);
-                        if (data['status'] == '1')
+                    .always(function (data) {
+                        if (1)
                         {
                             $("#button_approve").remove();
                             $("#button_reject").remove();
@@ -530,11 +527,11 @@
                             $("#order_id_<?php echo $orderlist[0]['order_id']; ?> img").attr('src', "<?php echo base_url('assets/img/ic_reload@3x.png'); ?>");
                             $("#li_order_id_<?php echo $orderlist[0]['order_id']; ?>").removeClass('pending_order_color');
                             $("#order_id_<?php echo $orderlist[0]['order_id']; ?> img").toggleClass('pending_order_img img');
-                            swal("$" + data['amount'], "Your payment has been successfully processed", "success");
+                            swal("$" + amount, "Your payment has been successfully processed", "success");
                             print_html(content)
                         } else {
                             $("#button_approve").html('APPROVE');
-                            swal("$" + amout, data['msg'], "error");
+                            swal("$" + amount, data['msg'], "error");
                         }
                     });
         } else

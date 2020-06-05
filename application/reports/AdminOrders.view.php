@@ -7,20 +7,6 @@
 <link href="<?php echo base_url('assets/css/plugin/bootstrap-timepicker/bootstrap-datetimepicker.css'); ?>" rel="stylesheet">
 
 <!-- <div class="loading"><img src="<?php echo base_url('assets/img/loading.gif'); ?>" alt="loading-img"></div> -->
-        <div id="top" class="clearfix">
-
-            <!-- Start App Logo -->
-            <div class="applogo">
-                <a href="<?php echo base_url(); ?>" class="logo">Tap-in</a>
-            </div>
-            <!-- End Top Right -->
-            <ul class="topmenu"  style="display: block">
-                    &nbsp;&nbsp; <li ><a id="orderlist_tab" href="<?php echo base_url('index.php/AdminOrderReport'); ?>">Admin Report</a></li>
-                    <li ><a id="product_tab" href="<?php echo base_url('index.php/CorpDriverReport'); ?>">Driver Report</a></li>
-                  </ul>
-        </div>
-
-
 <?php
 use \koolreport\widgets\koolphp\Table;
 use \koolreport\inputs\TextBox;
@@ -29,7 +15,7 @@ use \koolreport\Select2;
 ?>
 <html>
 <head>
-    <title>Tap-in Order Reports</title>
+    <title>Tap4Markets Admin Order Reports</title>
     <style>
         .cssHeader
         {
@@ -44,9 +30,13 @@ use \koolreport\Select2;
     </style>
 </head>
 <body>
+    <script>
+    $("#header").load("header.html");
+    // $("#footer").load("footer.html");
+    </script>
 <div align="center">
-    <h1>vTech Communication</h1>
-    <h3>Orders With Given Status </h3>
+    <h1>TapForAll, Tap-in, Tap4Markets</h1>
+    <h3>Orders With Given Status</h3>
 </div>
 <form method="post">
     <div class="row">

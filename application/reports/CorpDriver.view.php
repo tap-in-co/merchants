@@ -17,7 +17,8 @@
             <ul class="topmenu"  style="display: block">
                     &nbsp;&nbsp; <li ><a id="orderlist_tab" href="<?php echo base_url('index.php/AdminOrderReport'); ?>">Admin Report</a></li>
                     <li ><a id="product_tab" href="<?php echo base_url('index.php/CorpDriverReport'); ?>">Driver Report</a></li>
-                  </ul>
+                    <li ><a id="product_tab" href="<?php echo base_url('index.php/KRQueryBuilderReport'); ?>">Query Builder Report</a></li>
+            </ul>
         </div>
 
 

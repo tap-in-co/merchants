@@ -326,7 +326,7 @@ class Site extends CI_Controller
         if ($response['status'] != 1) {
             // something went wrong, if this is an corp account, just record it and pass success. We will charge the
             // employee later
-            if ($order_payment_detail['order_type'] == 1) {
+            if ( ($order_payment_detail['order_type'] == 1) ||  ($order_payment_detail['order_type'] == 5)) {
                 $this->m_site->update_order_payment_result($order_id, $response['msg']);
                 $response['msg'] = "Success!";
                 $response['status'] = 1;
@@ -467,12 +467,13 @@ class Site extends CI_Controller
     {
 //        $this->email_configration();
         $body = $this->load->view('v_email_receipt', $data, TRUE);
-        $subject = "Your Order Receipt";
+        $order_id = $data['order_id'];
+        $subject = "Your Receipt for Order #$order_id";
 //        $this->email->to($email);
 //        $this->email->subject($subject);
 //        $this->email->message($body);
-
-        sendGridEmail($subject, $body, "Tap In", "tap-in@tapforall.com", $email);
+        $site_name = SiteName;
+        sendGridEmail($subject, $body, $site_name, "Tap-In@tapforall.com", $email);
 
 //        if($this->email->send()) {
 //            $this->session->set_flashdata("email_sent", "Email sent successfully.");

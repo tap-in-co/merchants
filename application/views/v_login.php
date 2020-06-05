@@ -17,11 +17,11 @@
 
         </style></head>
     <body>
-
+        <?php $site_name=SiteName;?>
         <div class="login-form">
             <form method="post" action="<?php echo base_url('index.php/login/do_login'); ?>">
                 <div class="top">
-                    <h1>Tap-in</h1>
+                    <h1><?php echo $site_name ?></h1>
                     <h4>Business Login Area!!!</h4>
                 </div>
                 <div class="form-area">

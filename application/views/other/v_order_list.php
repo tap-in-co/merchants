@@ -6,8 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="keywords" content="" />
-        <title>Tap In </title>
-        <?php $this->load->view('v_head'); ?>
+<!--        <title>Tap In </title>-->
+        <?php $site_name = SiteName;?> <title><?php echo $site_name;?></title> $this->load->view('v_head'); ?>
     </head>
     <body>
 
@@ -160,7 +160,7 @@
                                             <td class="text-right">$ 1.800,00</td>
                                         </tr>
                                         <tr>
-                                            <td>Logo Design <p>Designed a logo for happy company</td>
+                                            <td>Logo Design <p>Tap4Markets, A tapforAll comapny</td>
                                             <td>10</td>
                                             <td>$ 50,00</td>
                                             <td class="text-right">$ 500,00</td>

@@ -12,8 +12,9 @@ function limit_text($text, $limit) {
 ?>
 <html xmlns="">
     <head>
+        <?php $site_name = SiteName;?>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Tap In</title>
+        <title><?php echo $site_name;?></title>
 
 
     </head>
@@ -28,7 +29,7 @@ function limit_text($text, $limit) {
                         <table border="0" width="100%"  bgcolor="black" >
                             <tr>
                                 <td height="10" style="text-align: center">
-                                    <img src="<?php echo base_url('assets/email_templete/tap-in-logo-with-name~iphone@2x.png'); ?>" ></img>
+                                    <img src="<?php echo base_url('assets/email_templete/tap-in-logo.png'); ?>" ></img>
                                 </td>
 
                             </tr>

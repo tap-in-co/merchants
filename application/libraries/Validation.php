@@ -31,7 +31,7 @@ class Validation {
             }
             $return['statuscode'] = 403;
             echo json_encode($return);
-            die;
+//            die;
         }
     }
 

@@ -32,7 +32,7 @@ $parent_url =  dirname(base_url()) ."/";
                         <table border="0" width="100%"  bgcolor="black" >
                             <tr>
                                 <td height="10" style="text-align: center">
-                                    <img src="<?php echo base_url('assets/email_templete/tap-in-logo-with-name~iphone@2x.png'); ?>" ></img>
+                                    <img src="<?php echo base_url('assets/email_templete/tap-in-logo.png'); ?>" ></img>
                                 </td>
 
                             </tr>

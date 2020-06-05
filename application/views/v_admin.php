@@ -3,13 +3,14 @@
 
     <!-- Start App Logo -->
     <div class="applogo">
-        <?php $reportPath = base_url('index.php/CorpDriverReport'); ?>
-        <a href="<?php echo base_url(); ?>" class="logo">Tap-in</a>
+        <!--<?php $reportPath = base_url('index.php/CorpDriverReport'); ?> -->
+        <a href="<?php echo base_url(); ?>" class="logo">Tap4Markets</a>
     </div>
     <ul class="topmenu"  style="display: block">
 
         <li ><a id="reports_tab1" href="<?php echo base_url('index.php/CorpDriverReport'); ?>">Driver Report</a></li>
-        <li ><a id="reports_tab2" href="<?php echo base_url('index.php/AdminOrderReport'); ?>">Order Reports</a></li>
+        <li ><a id="reports_tab2" href="<?php echo base_url('index.php/AdminOrderReport'); ?>">Order Report</a></li>
+        <li ><a id="reports_tab2" href="<?php echo base_url('index.php/KRQueryBuilderReport'); ?>">Query Builder Report</a></li>
 
 
     </ul>

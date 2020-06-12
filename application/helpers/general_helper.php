@@ -1,68 +1,68 @@
 <?php
 
 function error_res($msg) {
-    ///////////ERROR RESPONSE
-    $msg = $msg == "" ? "Error" : $msg;
-    return array("status" => 0, "msg" => $msg);
+	///////////ERROR RESPONSE
+	$msg = $msg == "" ? "Error" : $msg;
+	return array("status" => 0, "msg" => $msg);
 }
 
 function success_res($msg) {
-    ////////// SUCCESS RESPONSE
-    $msg = $msg == "" ? "Success" : $msg;
-    return array("status" => 1, "msg" => $msg);
+	////////// SUCCESS RESPONSE
+	$msg = $msg == "" ? "Success" : $msg;
+	return array("status" => 1, "msg" => $msg);
 }
 
 function is_login() {
-    /////////// CHECK PARAMETER USER_ID SET IN CODEIGNTER SESSION
-    //////////// CODIGNATER SESSION IS NOT SESSTION OF PHP..CODEIGNATER USE COKIE FOR SESSTION
-    $CI = & get_instance();
-    $user_id = $CI->session->userdata('businessID');
-    return $user_id;
+	/////////// CHECK PARAMETER USER_ID SET IN CODEIGNTER SESSION
+	//////////// CODIGNATER SESSION IS NOT SESSTION OF PHP..CODEIGNATER USE COKIE FOR SESSTION
+	$CI = & get_instance();
+	$user_id = $CI->session->userdata('businessID');
+	return $user_id;
 }
 
 function sub_businesses() {
-    /////////// CHECK PARAMETER USER_ID SET IN CODEIGNTER SESSION
-    //////////// CODIGNATER SESSION IS NOT SESSTION OF PHP..CODEIGNATER USE COKIE FOR SESSTION
-    $CI = & get_instance();
-    $sub_businesses = $CI->session->userdata('sub_businesses');
-    return $sub_businesses;
+	/////////// CHECK PARAMETER USER_ID SET IN CODEIGNTER SESSION
+	//////////// CODIGNATER SESSION IS NOT SESSTION OF PHP..CODEIGNATER USE COKIE FOR SESSTION
+	$CI = & get_instance();
+	$sub_businesses = $CI->session->userdata('sub_businesses');
+	return $sub_businesses;
 }
 
 function generateRandomString($length = 2) {
-    ///////////GET RAMNDOM STRING FROM BELOW STRING
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $randomString = '';
-    for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[rand(0, strlen($characters) - 1)];
-    }
-    return $randomString;
+	///////////GET RAMNDOM STRING FROM BELOW STRING
+	$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	$randomString = '';
+	for ($i = 0; $i < $length; $i++) {
+		$randomString .= $characters[rand(0, strlen($characters) - 1)];
+	}
+	return $randomString;
 }
 
 function encrypt_string($string) {
-    $key = "c91301c731a55b06f843e1bcebd31f22";
-    $result = '';
-    for ($i = 0; $i < strlen($string); $i++) {
-        $char = substr($string, $i, 1);
-        $keychar = substr($key, ($i % strlen($key)) - 1, 1);
-        $char = chr(ord($char) + ord($keychar));
-        $result.=$char;
-    }
-    return base64_encode($result);
+	$key = "c91301c731a55b06f843e1bcebd31f22";
+	$result = '';
+	for ($i = 0; $i < strlen($string); $i++) {
+		$char = substr($string, $i, 1);
+		$keychar = substr($key, ($i % strlen($key)) - 1, 1);
+		$char = chr(ord($char) + ord($keychar));
+		$result.=$char;
+	}
+	return base64_encode($result);
 }
 
 function decrypt_string($string) {
-    $key = "c91301c731a55b06f843e1bcebd31f22";
-    $result = '';
-    $string = base64_decode($string);
+	$key = "c91301c731a55b06f843e1bcebd31f22";
+	$result = '';
+	$string = base64_decode($string);
 
-    for ($i = 0; $i < strlen($string); $i++) {
-        $char = substr($string, $i, 1);
-        $keychar = substr($key, ($i % strlen($key)) - 1, 1);
-        $char = chr(ord($char) - ord($keychar));
-        $result.=$char;
-    }
+	for ($i = 0; $i < strlen($string); $i++) {
+		$char = substr($string, $i, 1);
+		$keychar = substr($key, ($i % strlen($key)) - 1, 1);
+		$char = chr(ord($char) - ord($keychar));
+		$result.=$char;
+	}
 
-    return $result;
+	return $result;
 }
 
 function time_elapsed_string($ptime) {
@@ -71,47 +71,47 @@ function time_elapsed_string($ptime) {
 //    date_default_timezone_set('America/Los_Angeles');
 //    $etime = time() - $ptime;
 
-    $etime = $ptime;
+	$etime = $ptime;
 
-    if ($etime < 1) {
-        return '0 seconds';
-    }
+	if ($etime < 1) {
+		return '0 seconds';
+	}
 
-    $a = array(365 * 24 * 60 * 60 => 'year',
-        30 * 24 * 60 * 60 => 'month',
-        24 * 60 * 60 => 'day',
-        60 * 60 => 'hour',
-        60 => 'minute',
-        1 => 'second'
-    );
-    $a_plural = array('year' => 'years',
-        'month' => 'months',
-        'day' => 'days',
-        'hour' => 'hours',
-        'minute' => 'minutes',
-        'second' => 'seconds'
-    );
+	$a = array(365 * 24 * 60 * 60 => 'year',
+		30 * 24 * 60 * 60 => 'month',
+		24 * 60 * 60 => 'day',
+		60 * 60 => 'hour',
+		60 => 'minute',
+		1 => 'second'
+	);
+	$a_plural = array('year' => 'years',
+		'month' => 'months',
+		'day' => 'days',
+		'hour' => 'hours',
+		'minute' => 'minutes',
+		'second' => 'seconds'
+	);
 
-    foreach ($a as $secs => $str) {
-        $d = $etime / $secs;
-        if ($d >= 1) {
-            $r = round($d);
-            return $r . ' ' . ($r > 1 ? $a_plural[$str] : $str) . ' ago';
-        }
-    }
+	foreach ($a as $secs => $str) {
+		$d = $etime / $secs;
+		if ($d >= 1) {
+			$r = round($d);
+			return $r . ' ' . ($r > 1 ? $a_plural[$str] : $str) . ' ago';
+		}
+	}
 }
 
 function push_notification_ios($arg_device_token, $message_body) {
 
 
 
-    $deviceToken = "" . $arg_device_token . "";
-    $production = 1;
-    if ($production==1) {
-        $gateway = 'ssl://gateway.push.apple.com:2195';
-    } else {
-        $gateway = 'ssl://gateway.sandbox.push.apple.com:2195';
-    }
+	$deviceToken = "" . $arg_device_token . "";
+	$production = 1;
+	if ($production==1) {
+		$gateway = 'ssl://gateway.push.apple.com:2195';
+	} else {
+		$gateway = 'ssl://gateway.sandbox.push.apple.com:2195';
+	}
 
 
 
@@ -122,106 +122,169 @@ function push_notification_ios($arg_device_token, $message_body) {
 // Create a Stream
    $ctx = stream_context_create();
 // Define the certificate to use
-    // stream_context_set_option($ctx, 'ssl', 'local_cert', 'ck.pem');
+	// stream_context_set_option($ctx, 'ssl', 'local_cert', 'ck.pem');
 // Passphrase to the certificate
-    // stream_context_set_option($ctx, 'ssl', 'passphrase', 'tapinpush');
+	// stream_context_set_option($ctx, 'ssl', 'passphrase', 'tapinpush');
 
   stream_context_set_option($ctx, 'ssl', 'local_cert', 'Tapin_push_Certificates.pem');
   stream_context_set_option($ctx, 'ssl', 'passphrase','tapin');
 
 // Open a connection to the APNS server
-    $fp = stream_socket_client(
-            $gateway, $err, $errstr, 60, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $ctx);
+	$fp = stream_socket_client(
+			$gateway, $err, $errstr, 60, STREAM_CLIENT_CONNECT | STREAM_CLIENT_PERSISTENT, $ctx);
 
 // Check that we've connected
-    if (!$fp) {
-        $error = "Failed to connect: $err $errstr" . PHP_EOL;
-        return $error;
-    }
+	if (!$fp) {
+		$error = "Failed to connect: $err $errstr" . PHP_EOL;
+		return $error;
+	}
 
-    $body['aps'] = $message_body;
-    // Encode the payload as JSON
-    $payload = json_encode($body);
-    // Build the binary notification
-    $msg = chr(0) . pack('n', 32) . pack('H*', $deviceToken) . pack('n', strlen($payload)) . $payload;
+	$body['aps'] = $message_body;
+	// Encode the payload as JSON
+	$payload = json_encode($body);
+	// Build the binary notification
+	$msg = chr(0) . pack('n', 32) . pack('H*', $deviceToken) . pack('n', strlen($payload)) . $payload;
 
-    // Send it to the server
-    $result = fwrite($fp, $msg, strlen($msg));
-    fclose($fp);
-    if (!$result) {
-        //echo 'Error, notification not sent' . PHP_EOL;
-        $return = error_res("Error, notification not sent");
-        log_message('error', "****Failed to notify $deviceToken");
-        return $return;
-    } else {
-        $return = success_res("Success, notification sent");
-        log_message('info', "****Successfully notified $deviceToken");
-        return $return;
-    }
+	// Send it to the server
+	$result = fwrite($fp, $msg, strlen($msg));
+	fclose($fp);
+	if (!$result) {
+		//echo 'Error, notification not sent' . PHP_EOL;
+		$return = error_res("Error, notification not sent");
+		log_message('error', "****Failed to notify $deviceToken");
+		return $return;
+	} else {
+		$return = success_res("Success, notification sent");
+		log_message('info', "****Successfully notified $deviceToken");
+		return $return;
+	}
 }
 
 function staging_directory() {
-    return 'tap-in';
+	return 'tap-in';
 }
 
 function push_notification_android($deviceToken,$message)
-    {
-      //  $message['message']="Andorid Notification";
-        $fields = array(
-            'to' => $deviceToken,
-            'data' => $message,
-        );
-       define('FIREBASE_API_KEY', 'AIzaSyBninesHBYXsNFDOBkQp4M-K0nL-vYshzs');
-        // Set POST variables
-        $url = 'https://fcm.googleapis.com/fcm/send';
+	{
+	  //  $message['message']="Andorid Notification";
+		$fields = array(
+			'to' => $deviceToken,
+			'data' => $message,
+		);
+	   define('FIREBASE_API_KEY', 'AIzaSyBninesHBYXsNFDOBkQp4M-K0nL-vYshzs');
+		// Set POST variables
+		$url = 'https://fcm.googleapis.com/fcm/send';
 
-        $headers = array(
-            'Authorization: key=' . FIREBASE_API_KEY,
-            'Content-Type: application/json'
-        );
-        // Open connection
-        $ch = curl_init();
+		$headers = array(
+			'Authorization: key=' . FIREBASE_API_KEY,
+			'Content-Type: application/json'
+		);
+		// Open connection
+		$ch = curl_init();
 
-        // Set the url, number of POST vars, POST data
-        curl_setopt($ch, CURLOPT_URL, $url);
+		// Set the url, number of POST vars, POST data
+		curl_setopt($ch, CURLOPT_URL, $url);
 
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        // Disabling SSL Certificate support temporarly
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		// Disabling SSL Certificate support temporarly
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
 
-        // Execute post
-        $result = curl_exec($ch);
-        if ($result === FALSE) {
-            die('Curl failed: ' . curl_error($ch));
-        }
+		// Execute post
+		$result = curl_exec($ch);
+		if ($result === FALSE) {
+			die('Curl failed: ' . curl_error($ch));
+		}
 
-        // Close connection
-        curl_close($ch);
-        return  $result;
+		// Close connection
+		curl_close($ch);
+		return  $result;
 
-    }
+	}
 
 
-    /* payment process (stripe) related function */
+	/* payment process (stripe) related function */
 function getProcessingFee($amount, $number_of_processed_order) {
-    $processing_fee_fixed = 0.0;
-    if ($amount > 0) {
-        $processing_fee_fixed =  PROCESSING_FEE_FIXED * $number_of_processed_order;
-    }
+	$processing_fee_fixed = 0.0;
+	if ($amount > 0) {
+		$processing_fee_fixed =  PROCESSING_FEE_FIXED * $number_of_processed_order;
+	}
 
-    return (round($amount* PROCESSING_FEE_PERCENTAGE + $processing_fee_fixed, 2));
+	return (round($amount* PROCESSING_FEE_PERCENTAGE + $processing_fee_fixed, 2));
 
 }
 
-function isItaDeliveryOrder($orderInfo) {
+function calc_pickup_cutoff_date(&$dateArr, $int_weekday, $no_days) {
+	$weekday ="";
+	switch ($int_weekday) {
+		case 1:
+			$weekday = "monday";
+			break;
+		case 2:
+			$weekday = "tuesday";
+			break;
+		case 3:
+			$weekday = "wednesday";
+			break;
+		case 4:
+			$weekday = "Thursday";
+			break;
+		case 5:
+			$weekday = "Friday";
+			break;
+		case 6:
+			$weekday = "saturday";
+			break;
+		case 0:
+			$weekday = "sunday";
+			break;
+	}
+
+	// $date  = date("Y M D", mktime(0, 0, 0, date("m"), 0, 2020));
+	$pickup_date = date_create();
+	$cutoff_date = date_create();
+
+	if ($no_days <= 0) {
+		$sign = "";
+	}
+	else {
+		$sign = "+";
+	}
+	$i = 0;
+	While ($i < 2 ) {
+		if ($i == 1) {
+			$weekday = $weekday . " + 1 week";
+		}
+		$pickup_date = date('m/d/y', strtotime($weekday));
+
+		$strDate = "$pickup_date " . $sign . ($no_days) . " day";
+		$cutoff_date = date("m/d/y", strtotime($strDate));
+
+		$today = date('m/d/Y');
+		if ($today == $cutoff_date) {
+			break;
+		}
+		else if ($today > $cutoff_date) {
+			$i++;
+		}
+		else {
+			break;
+		}
+	}
+
+    $dateArr['pickup_date'] = $pickup_date;
+    $dateArr['cutoff_date'] = $cutoff_date;
+} //function
+
+function isItaDeliveryOrder($orderInfo)
+{
     $returnVal = false;
 
-    if ( (empty($orderInfo)) || empty(($orderInfo['consumer_delivery_id'])) ) {
+    if ((empty($orderInfo)) || empty(($orderInfo['consumer_delivery_id']))) {
         $returnVal = false;
     } else {
         if ($orderInfo['consumer_delivery_id'] > 0) {
@@ -229,29 +292,44 @@ function isItaDeliveryOrder($orderInfo) {
         }
     }
 
-
     return ($returnVal);
 }
 
+function isItaFarmersMarket($orderInfo) {
+	$returnVal = false;
+
+	if ( (empty($orderInfo)) || empty(($orderInfo['order_corp_id'])) ) {
+		$returnVal = false;
+	} else {
+		if ($orderInfo['order_corp_id'] > 0 ) {
+			$returnVal = true;
+		}
+	}
+
+
+	return ($returnVal);
+}
+
+
   function sendGridEmail($subject, $body, $from_name, $from_email, $to_email) {
 
-      $api_key = getenv('SendGridApiKey');
+	  $api_key = getenv('SendGridApiKey');
 
-        $email = new \SendGrid\Mail\Mail();
-        $email->setFrom($from_email, $from_name);
-        $email->setSubject($subject);
-        $email->addTo($to_email);
-        $email->addContent("text/html", $body);
-        $sendgrid = new \SendGrid($api_key);
-        try {
-            $response = $sendgrid->send($email);
-            print $response->statusCode() . "\n";
-            print_r($response->headers());
-            print $response->body() . "\n";
-            echo "Email was sent successfully";
-        } catch (Exception $e) {
-            echo 'Caught exception: '. $e->getMessage() ."\n";
-        }
+		$email = new \SendGrid\Mail\Mail();
+		$email->setFrom($from_email, $from_name);
+		$email->setSubject($subject);
+		$email->addTo($to_email);
+		$email->addContent("text/html", $body);
+		$sendgrid = new \SendGrid($api_key);
+		try {
+			$response = $sendgrid->send($email);
+			print $response->statusCode() . "\n";
+			print_r($response->headers());
+			print $response->body() . "\n";
+			echo "Email was sent successfully";
+		} catch (Exception $e) {
+			echo 'Caught exception: '. $e->getMessage() ."\n";
+		}
 
-    }
+	}
 

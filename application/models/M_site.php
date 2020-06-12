@@ -219,6 +219,7 @@ class M_site extends CI_Model {
         $this->db->where('active = 1 or beta = 1');
         $this->db->group_end();
         $result = $this->db->get();
+        $zzz = $this->db->last_query();
         $row = $result->result_array();
 
         if (count($row) > 0) {
@@ -1453,7 +1454,7 @@ class M_site extends CI_Model {
         }
 
         $this->db->where('product_id', $param['product_id']);
-		$dbRet = $this->db->update('product', $data);
+        $dbRet = $this->db->update('product', $data);
 
         $zzz = $this->db->last_query();
 
@@ -1966,4 +1967,33 @@ class M_site extends CI_Model {
         $this->db->query($query_statement);
     }
 
+    function insert_consumer_to_business_payment_processor($business_id, $consumer_id, $consumer_payment_id )
+    {
+        $data = array(
+            'consumer_id' => $consumer_id,
+            'business_id' => $business_id,
+            'consumer_payment_id' => $consumer_payment_id
+        );
+        $this->db->insert('consumer_payment_processor', $data);
+    }
+
+    function get_consumer_payment_processor_id($consumer_id, $business_id) {
+        $query = "select consumer_payment_id from consumer_payment_processor  
+            where business_id = $business_id and consumer_id = $consumer_id;";
+
+        $resultArr = $this->db->query($query);
+        $result = $resultArr->row_array();
+
+        return ($result['consumer_payment_id']);
+    }
+
+    function get_corp_info($corp_id){
+        $this->db->select('*');
+        $this->db->from('corp');
+        $this->db->where('corp_id', $corp_id);
+        $this->db->limit(1);
+        $result = $this->db->get();
+        $row = $result->row_array();
+        return $row;
+    }
 }

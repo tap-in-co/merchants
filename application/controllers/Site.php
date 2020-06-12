@@ -131,10 +131,27 @@ class Site extends CI_Controller
             // $order_detail['consumer'] = array();
 //            $data['orderlist'] = null;
         }
+//TODO
+        $data['order_corp_id'] = 1;
+        if (isItaFarmersMarket($data)) {
+            $corp_info = $this->m_site->get_corp_info($data['order_corp_id']);
+            $order_detail['pickup_location'] = $corp_info['location_abbr'];
+            $no_days = $corp_info['cutoff_no_days'];
+            $week_day = $corp_info['delivery_week_days'];
+            calc_pickup_cutoff_date($dateArr, $week_day, $no_days);
+
+            $time_string =  date('h:i', strtotime($corp_info["delivery_time"]));
+            $order_detail['pickup_date'] = $dateArr["pickup_date"] . " " . $time_string;
+            $time_string =  date('h:i', strtotime($corp_info["cutoff_time"]));
+            $order_detail['cutoff_date']= $dateArr["cutoff_date"] . " " . $time_string;
+        } else {
+            $order_detail['order_view']['cutoff_date'] = "";
+            $order_detail['pickup_date'] = "";
+            $order_detail['pickup_location'] = "";
+        }
 
         $data['order_view'] = $this->load->view('v_order_view', $order_detail, TRUE);
         $this->load->view('v_orderlist', $data);
-
     }
 
     function search_orderlist($keyword = "")
@@ -151,6 +168,22 @@ class Site extends CI_Controller
 
         $order_detail['order_detail'] = $this->m_site->get_order_detail($data['orderlist'][0]['order_id']);
         $order_detail['orderlist'] = $this->m_site->get_ordelist_order($data['orderlist'][0]['order_id'], $param['businessID'], $param['sub_businesses']);
+        $dateArr = array();
+        //TODO
+        $data['order_corp_id'] = 1;
+        if (isItaFarmersMarket($data)) {
+            $corp_info = $this->m_site->get_corp_info($data['order_corp_id']);
+            $order_detail['pickup_location'] = $corp_info['location_abbr'];
+            $no_days = $corp_info[0]['cutoff_no_days'];
+            $week_day = $corp_info[0]['delivery_week_days'];
+            calc_pickup_cutoff_date($dateArr, $week_day, $no_days);
+            $order_detail['order_detail']['pickup_date'] = $dateArr['pickup_date'];
+            $order_detail['order_detail']['pickup_date'] = $dateArr['cutoff_date'];
+        } else {
+            $order_detail['order_view']['cutoff_date'] = "";
+            $order_detail['pickup_date'] = "";
+            $order_detail['pickup_location'] = "";
+        }
         $data['order_view'] = $this->load->view('v_order_view', $order_detail, TRUE);
 
         $this->load->view('v_orderlist', $data);
@@ -168,6 +201,18 @@ class Site extends CI_Controller
         $data['order_detail'] = $this->m_site->get_order_detail($order_id);
         $data['orderlist'] = $this->m_site->get_ordelist_order($order_id, $order_type, $param['businessID'], $param['sub_businesses']);
         $data['consumer'] = $this->m_site->check_birthday_first_order($order_id);
+
+        $dateArr = array();
+        //TODO
+        $data['corp_id'] = 1;
+        if (isItaFarmersMarket($data)) {
+            $corp_info = $this->m_site->get_corp_info($data['corp_id']);
+            $no_days = $corp_info[0]['cutoff_no_days'];
+            $week_day = $corp_info[0]['delivery_week_days'];
+            calc_pickup_cutoff_date($dateArr, $week_day, $no_days);
+            $data['order_view']['pickup_date'] = $dateArr['pickup_date'];
+            $data['order_view']['pickup_date'] = $dateArr['cutoff_date'];
+        }
         $return['order_view'] = $this->load->view('v_order_view', $data, TRUE);
         echo json_encode($return);
     }
@@ -201,12 +246,15 @@ class Site extends CI_Controller
                 } else {
                     // require_once('lib/stripe/stripe-php/init.php');
                     \Stripe\Stripe::setApiKey($secret_key);
-                    $stripeCustomer = $order_payment_detail['cc_info']['stripe_consumer_id'];
+                    $consumer_id = $order_payment_detail['consumer_id'];
+                    $stripeCustomer = $this->m_site->get_consumer_payment_processor_id($consumer_id,$business_id);
                     if (empty($stripeCustomer)) {
                         $stripeCustomer = \Stripe\Customer::create([
                             // 'source' => 'tok_visa',
                             'id' => $order_payment_detail['consumer_id']
                         ]);
+                        $this->m_site->insert_consumer_to_business_payment_processor(
+                            $business_id, $consumer_id, $consumer_id );
                     } else {
                         $stripeCustomer = \Stripe\Customer::retrieve($order_payment_detail['consumer_id']);
                     }
@@ -326,12 +374,13 @@ class Site extends CI_Controller
         if ($response['status'] != 1) {
             // something went wrong, if this is an corp account, just record it and pass success. We will charge the
             // employee later
-            if ( ($order_payment_detail['order_type'] == 1) ||  ($order_payment_detail['order_type'] == 5)) {
+//            if ( ($order_payment_detail['order_type'] == 1) ||  ($order_payment_detail['order_type'] == 5)) {
+//            if ( ($order_payment_detail['order_type'] == 1) ) {
                 $this->m_site->update_order_payment_result($order_id, $response['msg']);
-                $response['msg'] = "Success!";
-                $response['status'] = 1;
-                $response['amount'] = $order_payment_detail['total'];
-            }
+//                $response['msg'] = "Success!";
+//                $response['status'] = 1;
+//                $response['amount'] = $order_payment_detail['total'];
+//            }
         }
         return json_encode($response);
     }
@@ -701,6 +750,111 @@ class Site extends CI_Controller
         curl_close($ch);
         echo "<pre>";
         print_r($result);
+    }
+
+    function validate_stripe_secret_key() {
+        $secret_key = $_REQUEST['stripe_secret_key'];
+
+        $messages = array();
+        $messages[] = 'Status is: ' . 1;
+        $messages[] = 'Message: ' . " Success!";
+
+        try {
+            \Stripe\Stripe::setApiKey($secret_key);
+
+            // create a test customer to see if the provided secret key is valid
+            $response = \Stripe\Customer::create(["description" => "Test Customer - Validate Secret Key"]);
+
+            return $messages;
+        }
+// error will be thrown when provided secret key is not valid
+        catch (\Stripe\Error\InvalidRequest $e) {
+            // Invalid parameters were supplied to Stripe's API
+            $body = $e->getJsonBody();
+            $err  = $body['error'];
+
+            $messages = array();
+            $messages[] = 'Status is: ' . $e->getHttpStatus();
+            $messages[] = 'Type is: ' . $err['type'];
+            $messages[] = 'Code is: ' . $err['code'];
+            $messages[] = 'Decline Code is: ' . $err['decline_code'];
+            $messages[] = 'Message: ' . $err['message'];
+
+            return $messages;
+        }
+        catch (\Stripe\Error\Authentication $e) {
+            // Authentication with Stripe's API failed
+            // (maybe you changed API keys recently)
+            $body = $e->getJsonBody();
+            $err  = $body['error'];
+
+            $messages = array();
+            $messages[] = 'Status is: ' . $e->getHttpStatus();
+            $messages[] = 'Type is: ' . $err['type'];
+            $messages[] = 'Code is: ' . $err['code'];
+            $messages[] = 'Decline Code is: ' . $err['decline_code'];
+            $messages[] = 'Message: ' . $err['message'];
+
+            return $messages;
+        }
+        catch (\Stripe\Error\ApiConnection $e) {
+            // Network communication with Stripe failed
+            $body = $e->getJsonBody();
+            $err  = $body['error'];
+
+            $messages = array();
+            $messages[] = 'Status is: ' . $e->getHttpStatus();
+            $messages[] = 'Type is: ' . $err['type'];
+            $messages[] = 'Code is: ' . $err['code'];
+            $messages[] = 'Decline Code is: ' . $err['decline_code'];
+            $messages[] = 'Message: ' . $err['message'];
+
+            return $messages;
+        }
+        catch (\Stripe\Error\Base $e) {
+            // Display a very generic error to the user, and maybe send
+            // yourself an email
+            $body = $e->getJsonBody();
+            $err  = $body['error'];
+
+            $messages = array();
+            $messages[] = 'Status is: ' . $e->getHttpStatus();
+            $messages[] = 'Type is: ' . $err['type'];
+            $messages[] = 'Code is: ' . $err['code'];
+            $messages[] = 'Decline Code is: ' . $err['decline_code'];
+            $messages[] = 'Message: ' . $err['message'];
+
+            return $messages;
+        }
+        catch (Exception $e) {
+            // Something else happened, completely unrelated to Stripe
+            $body = $e->getJsonBody();
+            $err  = $body['error'];
+
+            $messages = array();
+            $messages[] = 'Status is: ' . $e->getHttpStatus();
+            $messages[] = 'Type is: ' . $err['type'];
+            $messages[] = 'Code is: ' . $err['code'];
+            $messages[] = 'Decline Code is: ' . $err['decline_code'];
+            $messages[] = 'Message: ' . $err['message'];
+
+            return $messages;
+        }
+
+    }
+
+    function get_pickupdate_cutoff_date($row)
+    {
+        $dateArr = array();
+        $weekday = $row['delivery_week_days'];
+        $no_days = $row['cutoff_no_days'];
+        calc_pickup_cutoff_date($dateArr, $weekday, $no_days);
+        $time_string = date('h:i', strtotime($row["delivery_time"]));
+        $row["pickup_date"] = $dateArr["pickup_date"] . " " . $time_string;
+        $time_string = date('h:i', strtotime($row["cutoff_time"]));
+        $row["cutoff_date"] = $dateArr["cutoff_date"] . " " . $time_string;
+
+        return $row;
     }
 
 }

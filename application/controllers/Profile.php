@@ -19,6 +19,12 @@ class Profile extends CI_Controller {
         is_login() ? '' : redirect('index.php/login');
         $businessID = is_login();
         $data = $this->m_site->get_business($businessID);
+        $stripe_secret_key = $data['business_detail']['stripe_secret_key'];
+        $num_of_repeat = strlen($stripe_secret_key)-11;
+        $data['business_detail']['stripe_secret_key'] =
+            substr($stripe_secret_key, 0, 7) .
+            str_repeat('*', $num_of_repeat) .
+            substr($stripe_secret_key, -4);
         $this->load->view('v_profile', $data);
     }
 

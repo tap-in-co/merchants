@@ -32,6 +32,7 @@ WHERE
     AND  FIND_IN_SET(o.business_id,(SELECT merchant_ids FROM `corp` WHERE corp_name = 'CCCFM Walnut Creek Market 2020'))
     and  ( (CAST(o.date AS DATE)) <= :endDate and (CAST(o.date AS DATE)) >= :startDate )
     ORDER BY
+    Merchant,
     o.date DESC;
     ")
             ->params(array(

@@ -1,21 +1,26 @@
 
+<?php
+    use \koolreport\widgets\koolphp\Table;
+?>
 <link href="<?php echo base_url('assets/css/root.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('assets/css/plugin/bootstrap-toggle/bootstrap-toggle.min.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('assets/css/plugin/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('assets/css/plugin/sweet-alert/sweet-alert.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('assets/css/plugin/date-range-picker/daterangepicker.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('assets/css/plugin/bootstrap-timepicker/bootstrap-datetimepicker.css'); ?>" rel="stylesheet">
-
 <!-- <div class="loading"><img src="<?php echo base_url('assets/img/loading.gif'); ?>" alt="loading-img"></div> -->
-<?php
-use \koolreport\widgets\koolphp\Table;
-use \koolreport\inputs\TextBox;
-use \koolreport\inputs\DateRangePicker;
-use \koolreport\Select2;
-?>
+        <div id="top" class="clearfix">
+
+            <!-- Start App Logo -->
+            <div class="applogo">
+                <a href="<?php echo base_url(); ?>" class="logo">Tap4Markets</a>
+            </div>
+            <!-- End Top Right -->
+        </div>
 <html>
 <head>
-    <title>Tap4Markets Admin Report</title>
+    <title>Unverified Products Report</title>
+    <?php include('v_header_report.php'); ?>
     <style>
         .cssHeader
         {
@@ -28,55 +33,28 @@ use \koolreport\Select2;
             font-size: 12px;
         }
     </style>
-
-    <?php include('v_header_report.php'); ?>
 </head>
 <body>
-    <script>
-    $("#header").load("header.html");
-    // $("#footer").load("footer.html");
-    </script>
 <div align="center">
-    <h1>Tap4Markets</h1>
-    <h3>Orders With Given Status</h3>
+     <h1>Tap4Markets</h1>
+    <h3>Unverified Products Report</h3>
 </div>
 <form method="post">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <h4>Choose a date</h4>
-            <div class="form-group">
-                <?php
-                DateRangePicker::create(array(
-                    "name"=>"dateRange"
-                ))
-                ?>
-            </div>
+
+
+
+
+
+
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="form-group">
-                <h4>Choose order status</h4>
-                    <?php TextBox::create(array(
-                        "name"=>"statusInput"
-                    ));?>
 
-
-<!--                --><?php
-//                MultiSelect::create(array(
-//                    "name"=>"customers",
-//                    "dataStore"=>$this->dataStore("corp_orders"),
-//                    "dataBind"=>array(
-//                        "text"=>"customerName",
-//                        "value"=>"customerNumber",
-//                    ),
-//                    "attributes"=>array(
-//                        "class"=>"form-control",
-//                        "size"=>10,
-//                    )
-//                ));
-//                ?>
 
 
             </div>

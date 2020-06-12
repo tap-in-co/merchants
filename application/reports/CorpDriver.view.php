@@ -11,14 +11,10 @@
 
             <!-- Start App Logo -->
             <div class="applogo">
-                <a href="<?php echo base_url(); ?>" class="logo">Tap-in</a>
+                <a href="<?php echo base_url(); ?>" class="logo">Tap4Markets</a>
             </div>
             <!-- End Top Right -->
-            <ul class="topmenu"  style="display: block">
-                    &nbsp;&nbsp; <li ><a id="orderlist_tab" href="<?php echo base_url('index.php/AdminOrderReport'); ?>">Admin Report</a></li>
-                    <li ><a id="product_tab" href="<?php echo base_url('index.php/CorpDriverReport'); ?>">Driver Report</a></li>
-                    <li ><a id="product_tab" href="<?php echo base_url('index.php/KRQueryBuilderReport'); ?>">Query Builder Report</a></li>
-            </ul>
+
         </div>
 
 
@@ -30,6 +26,7 @@ use \koolreport\inputs\DateRangePicker;
 
 ?>
 <html>
+    <?php include('v_header_report.php'); ?>
     <head>
         <title>Tap-in Drivers' Report</title>
         <style>

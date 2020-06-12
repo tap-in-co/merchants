@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
   'dsn' => '',
-  'hostname' => $_SERVER['RDS_HOSTNAME'],
-  'username' => $_SERVER['RDS_USERNAME'],
-  'password' => $_SERVER['RDS_PASSWORD'],
-  'database' => $_SERVER['RDS_DB_NAME'],
+  'hostname' => 'tap-in-staging.cbiqjablh73y.us-west-2.rds.amazonaws.com',
+  'username' => 'dbadmin',
+  'password' => 'id0ntknow',
+  'database' => 'Tap-In-Staging',
   'dbdriver' => 'mysqli',
   'dbprefix' => '',
   'pconnect' => FALSE,

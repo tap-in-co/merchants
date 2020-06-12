@@ -72,13 +72,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 $active_group = 'default';
+$db_name = getenv("DB_Name");
 
 $db['default'] = array(
   'dsn' => '',
   'hostname' => 'localhost',
   'username' => 'artdoost_dbadmin',
   'password' => 'id0ntknow',
-  'database' => 'artdoost_local_tapin',
+  'database' => $db_name,
   'dbdriver' => 'mysqli',
   'dbprefix' => '',
   'pconnect' => FALSE,

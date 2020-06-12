@@ -8,9 +8,9 @@
     </div>
     <ul class="topmenu"  style="display: block">
 
+        <li ><a id="reports_tab2" href="<?php echo base_url('index.php/AdminOrderReport'); ?>">Admin Report</a></li>
         <li ><a id="reports_tab1" href="<?php echo base_url('index.php/CorpDriverReport'); ?>">Driver Report</a></li>
-        <li ><a id="reports_tab2" href="<?php echo base_url('index.php/AdminOrderReport'); ?>">Order Report</a></li>
-        <li ><a id="reports_tab2" href="<?php echo base_url('index.php/KRQueryBuilderReport'); ?>">Query Builder Report</a></li>
+        <li ><a id="reports_tab2" href="<?php echo base_url('index.php/UnverifiedProductsReport'); ?>">Unverified Products Report</a></li>
 
 
     </ul>

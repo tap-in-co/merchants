@@ -75,15 +75,11 @@ error_reporting(0);
             </div>
             <div class="col-md-6  padding-0 text-right text-right1" >
 <!--                --><?php //if ($orderlist[0]['delivery_charge_amount'] > 0) {?>
-                <?php if (isItaDeliveryOrder($orderlist[0])) {?>
-
-                    <span class="delivery_time">Have order ready at : <b><?php echo date('h :i a', strtotime($orderlist[0]['driver_pickup_time'])); ?> </b></span>
+                    <span class="delivery_time">Have order ready at : <b><?php echo $pickup_date ?> </b></span>
                     <br>
-                    <span class="delivery_address">Delivery Address : <b><?php echo $orderlist[0]['delivery_address']; ?></b> </span>
+                    <span class="delivery_address">Delivery Address : <b><?php echo $pickup_location; ?></b> </span>
                     <br>
                     <span class="delivery_note">Delivery Instruction : <b><?php echo $orderlist[0]['delivery_instruction']; ?></b> </span>
-
-                <?php } ?>
                 <?php if ($orderlist[0]['pd_mode'] == 1) {
                     ?>
 
@@ -242,7 +238,9 @@ error_reporting(0);
 
                         $.post("<?php echo base_url('index.php/Site/approve') ?>", param)
                                 .always(function (data) {
-                                    if (1)
+                                    data = jQuery.parseJSON(data);
+                                    if (data['status'] == '1')
+                                    // if (1)
                                     {
                                         $("#button_approve").remove();
                                         $("#button_reject").remove();
@@ -362,9 +360,9 @@ error_reporting(0);
                                             $("#order_id_<?php echo $orderlist[0]['order_id']; ?>").remove();
                                         }, 2000)
 
-									} else {
-										$("#button_complete").html();
-										swal("Completed order", data['msg'], "error");
+                                    } else {
+                                        $("#button_complete").html();
+                                        swal("Completed order", data['msg'], "error");
                                     }
                                 });
 
@@ -396,9 +394,9 @@ error_reporting(0);
                                             $("#order_id_<?php echo $orderlist[0]['order_id']; ?>").remove();
                                         }, 2000)
 
-									} else {
-										$("#button_complete").html();
-										swal("Completed order", data['msg'], "error");
+                                    } else {
+                                        $("#button_complete").html();
+                                        swal("Completed order", data['msg'], "error");
                                     }
                                 });
                     };
@@ -517,7 +515,9 @@ error_reporting(0);
             var param = {order_id: order_id};
             $.post("<?php echo base_url('index.php/site/payment') ?>", param)
                     .always(function (data) {
-                        if (1)
+                        data = jQuery.parseJSON(data);
+                        if (data['status'] == '1')
+                        // if (1)
                         {
                             $("#button_approve").remove();
                             $("#button_reject").remove();

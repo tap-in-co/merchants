@@ -238,8 +238,12 @@ error_reporting(0);
 
                         $.post("<?php echo base_url('index.php/Site/approve') ?>", param)
                                 .always(function (data) {
-                                    data = jQuery.parseJSON(data);
-                                    if (data['status'] == '1')
+                                    try {
+                                        data = JSON.parse(data);
+                                    } catch(ex){
+                                        alert("Network error. Please refresh your browser");
+                                    }
+                                    if (data.status == '1')
                                     // if (1)
                                     {
                                         $("#button_approve").remove();
@@ -254,8 +258,12 @@ error_reporting(0);
 
                                     } else {
                                         $("#button_approve").html('APPROVE');
-                                        swal("$" + amount, data['msg'], "error");
+                                        swal("$" + amount, data.msg, "error");
                                     }
+                                })
+                                .fail(function() {
+                                // handle request failures TOD
+                                    alert("Failed....");
                                 });
                         setTimeout(function(){ get_remaining_approval_order(); }, 3000);
                     };

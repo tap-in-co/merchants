@@ -127,7 +127,8 @@
                                         <div class="form-group">
                                             <label for="input002" class="col-sm-2 control-label form-label">Name</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="name" name="name" required="" value="<?php echo $product['name']; ?>">
+                                                <input type="text" class="form-control" id="name" name="name" required="" value="<?php echo $product['name']; ?>"
+                                                       placeholder= "Up to 35 characters. Format: name - unit">
                                             </div>
                                         </div>
 
@@ -157,7 +158,8 @@
                                         <div class="form-group">
                                             <label for="input002" class="col-sm-2 control-label form-label">Price</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="price" name="price" required="" value="<?php echo $product['price']; ?>">
+                                                <input type="text" class="form-control" id="price" name="price" required="" value="<?php echo $product['price']; ?>"
+                                                       placeholder= "No Dollar Sign">
                                             </div>
                                         </div>
 

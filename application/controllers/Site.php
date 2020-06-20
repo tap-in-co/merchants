@@ -220,9 +220,11 @@ class Site extends CI_Controller
     function approve()
     {
         $result = $this->payment();
-        // we are passing this to the view so let's set the content type accordingly
-        header('Content-Type: application/json');
-        echo json_encode($result);
+        $json_result = json_encode($result);
+//        ob_end_flush();
+        ob_clean();
+//        ob_start();
+        echo $json_result;
     }
 
     function payment()
@@ -382,7 +384,7 @@ class Site extends CI_Controller
 //                $response['amount'] = $order_payment_detail['total'];
 //            }
         }
-        return json_encode($response);
+        return ($response);
     }
 
     function notifyMerchant()

@@ -96,7 +96,8 @@
                                         <div class="form-group">
                                             <label for="input002" class="col-sm-2 control-label form-label">Name</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="name" name="name" required="" >
+                                                <label for="name"></label><input type="text" class="form-control" id="name" name="name" required=""
+                                                                                 placeholder= "Up to 35 characters. Format: name - unit">
                                             </div>
                                         </div>
 
@@ -126,7 +127,8 @@
                                         <div class="form-group">
                                             <label for="input002" class="col-sm-2 control-label form-label">Price</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="price" name="price" required="" >
+                                                <input type="text" class="form-control" id="price" name="price" required=""
+                                                       placeholder= "No Dollar Sign">
                                             </div>
                                         </div>
 

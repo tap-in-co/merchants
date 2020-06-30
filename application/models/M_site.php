@@ -42,7 +42,7 @@ class M_site extends CI_Model {
 
         $message = "There is a new order!";
         // require_once APPPATH . 'libraries/Twilio/autoload.php'; // Loads the Twilio library
-        $TapInServerConstsParentPath = APPPATH . "../" . "../" . staging_directory() . '/include/consts_server.inc';
+        $TapInServerConstsParentPath = server_api_directory(). '/include/consts_server.inc';
         require_once $TapInServerConstsParentPath; // Loads our consts
 //        use Twilio\Rest\Client;
         $query = "SELECT `o`.`order_id`,`o`.business_id,`bc`.`sms_no`,(TIMESTAMPDIFF(second ,date ,now())) as secound,bc.uuid,bc.used_for_cron,bc.email FROM (SELECT * FROM `order` ORDER BY `order`.`order_id` DESC ) as o LEFT JOIN business_internal_alert as bc on bc.business_id=o.business_id where (TIMESTAMPDIFF(second ,date ,now())) > 300 and `o`.`status`='1' group by `o`.`business_id` ORDER BY `bc`.`used_for_cron` DESC";
@@ -428,11 +428,18 @@ class M_site extends CI_Model {
         $this->db->where('o.status !=', 0);
         $this->db->where('o.status', 3);
         $this->db->where('o.business_id', $param['businessID']);
-        $this->db->where("o.order_id  LIKE '%" . $param['keyword'] . "%'");
+
+        $this->db->group_start();
+        $this->db->where("o.order_id  LIKE '%" . $param['keyword'] . "%' or cp.nickname LIKE '%" . $param['keyword'] . "%' " );
+        $this->db->group_end();
+
+
         $this->db->order_by("o.order_id", "desc");
         //$this->db->limit(10);
         $result = $this->db->get();
         $row = $result->result_array();
+
+        $zzz = $this->db->last_query();
         return $row;
     }
 

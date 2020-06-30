@@ -166,16 +166,30 @@ class Site extends CI_Controller
         $data['order_status'] = 'completed';
         $data['orderlist'] = $this->m_site->get_search_business_order_list($param);
 
+        if (empty($data['orderlist']) ) {
+
+            $data['order_view'] = $this->load->view('v_order_view', array(), TRUE);
+
+            $this->load->view('v_orderlist', $data);
+
+            return;
+        }
         $order_detail['order_detail'] = $this->m_site->get_order_detail($data['orderlist'][0]['order_id']);
-        $order_detail['orderlist'] = $this->m_site->get_ordelist_order($data['orderlist'][0]['order_id'], $param['businessID'], $param['sub_businesses']);
+        // order_type TODO
+        if (empty($data['orderlist'][0]['order_type'])) {
+            $order_type = 1;
+        } else {
+            $order_type = $data['orderlist'][0]['order_type'];
+        }
+        $order_detail['orderlist'] = $this->m_site->get_ordelist_order($data['orderlist'][0]['order_id'], $order_type, $param['businessID'], $param['sub_businesses']);
         $dateArr = array();
         //TODO
         $data['order_corp_id'] = 1;
         if (isItaFarmersMarket($data)) {
             $corp_info = $this->m_site->get_corp_info($data['order_corp_id']);
             $order_detail['pickup_location'] = $corp_info['location_abbr'];
-            $no_days = $corp_info[0]['cutoff_no_days'];
-            $week_day = $corp_info[0]['delivery_week_days'];
+            $no_days = $corp_info['cutoff_no_days'];
+            $week_day = $corp_info['delivery_week_days'];
             calc_pickup_cutoff_date($dateArr, $week_day, $no_days);
             $order_detail['order_detail']['pickup_date'] = $dateArr['pickup_date'];
             $order_detail['order_detail']['pickup_date'] = $dateArr['cutoff_date'];
@@ -207,8 +221,8 @@ class Site extends CI_Controller
         $data['corp_id'] = 1;
         if (isItaFarmersMarket($data)) {
             $corp_info = $this->m_site->get_corp_info($data['corp_id']);
-            $no_days = $corp_info[0]['cutoff_no_days'];
-            $week_day = $corp_info[0]['delivery_week_days'];
+            $no_days = $corp_info['cutoff_no_days'];
+            $week_day = $corp_info['delivery_week_days'];
             calc_pickup_cutoff_date($dateArr, $week_day, $no_days);
             $data['order_view']['pickup_date'] = $dateArr['pickup_date'];
             $data['order_view']['pickup_date'] = $dateArr['cutoff_date'];
@@ -276,8 +290,8 @@ class Site extends CI_Controller
                                 $fingerprint = $token['card']['fingerprint'];
                                 $stripeCustomerID = $stripeCustomer['id'];
                             } else {
-                                $stripeCustomerID =
-                                    $order_payment_detail['cc_info']['stripe_consumer_id'];
+                                $stripeCustomerID = $stripeCustomer['id'];
+//                                    $order_payment_detail['cc_info']['stripe_consumer_id'];
                                 $card_id = $order_payment_detail['cc_info']['stripe_card_id'];
                             }
 
@@ -299,7 +313,7 @@ class Site extends CI_Controller
                         $this->m_site->update_order_status($order_id, $charge_id, $response['amount'],
                             $order_payment_detail['consumer_id']);
 
-                        //save card token in the databas
+                        //save card token in the database
                         if (empty($order_payment_detail['cc_info']['stripe_fingerprint'])) {
                             $success_code =
                                 $this->m_site->update_card_info_for_stripe(

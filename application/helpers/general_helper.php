@@ -164,6 +164,10 @@ function staging_directory() {
 	return 'tap-in';
 }
 
+function server_api_directory() {
+    return dirname(FCPATH) .'/tap-in';
+}
+
 function push_notification_android($deviceToken,$message)
 	{
 	  //  $message['message']="Andorid Notification";

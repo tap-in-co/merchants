@@ -41,6 +41,7 @@ error_reporting(0);
                         <?php
                     }
                     ?>
+                    <strong> for <mark><?php echo $order_detail['corp_name']?></mark></strong>
                     <input type="hidden" id="orderstatus" value="<?php echo $orderlist[0]['status']; ?>">
 
 

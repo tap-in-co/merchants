@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -226,7 +227,7 @@ $config['directory_trigger'] = 'd';
 
 $config['log_threshold'] = 1;
 $mode = getenv("EnvMode");
-if ($mode == "development") {
+if ( ($mode == "development") || ($mode == "staging") ) {
     $config['log_threshold'] = 4;
 }
 

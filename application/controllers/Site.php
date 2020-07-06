@@ -70,8 +70,9 @@ class Site extends CI_Controller
                 , $data['orderlist'][0]['order_type']
                 , $param['businessID'], $param['sub_businesses']);
             $order_detail['consumer'] = $this->m_site->check_birthday_first_order($data['orderlist'][0]['order_id']);
+            $order_detail['order_detail']['corp_name'] = $data['orderlist'][0]['corp_name'];
         } else {
-            // there no orders so init the array
+            // there are no orders so init the array
             $data['orderlist'][0]['order_id'] = "";
             $data['orderlist'][0]['payment_id'] = "";
             $data['orderlist'][0]['total'] = 0.0;
@@ -215,7 +216,7 @@ class Site extends CI_Controller
         $data['order_detail'] = $this->m_site->get_order_detail($order_id);
         $data['orderlist'] = $this->m_site->get_ordelist_order($order_id, $order_type, $param['businessID'], $param['sub_businesses']);
         $data['consumer'] = $this->m_site->check_birthday_first_order($order_id);
-
+        $data['order_detail']['corp_name'] = $data['orderlist'][0]['corp_name'];
         $dateArr = array();
         //TODO
         $data['corp_id'] = 1;
@@ -295,12 +296,12 @@ class Site extends CI_Controller
                                 $card_id = $order_payment_detail['cc_info']['stripe_card_id'];
                             }
 
-                            $charge = \Stripe\Charge::create(array(
-                                'amount' => $amount, 'currency' => 'usd',
-                                'customer' => $stripeCustomerID,
-                                'source' => $card_id,
-                                'metadata' => array('order_id' => $order_id, 'business_id' => $business_id)
-                            ));
+                                $charge = \Stripe\Charge::create(array(
+                                    'amount' => $amount, 'currency' => 'usd',
+                                    'customer' => $stripeCustomerID,
+                                    'source' => $card_id,
+                                    'metadata' => array('order_id' => $order_id, 'business_id' => $business_id)
+                                ));
 
                             $response = success_res("your payment has been successfully processed");
                             $charge_id = $charge->id;
@@ -467,7 +468,6 @@ class Site extends CI_Controller
 
     function test_notification()
     {
-
         $param = $_REQUEST;
         $device_token = $param['device_token'];
         $message_body = array(

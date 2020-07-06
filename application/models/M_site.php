@@ -392,10 +392,11 @@ class M_site extends CI_Model {
 
     function get_business_order_list($param) {
         $this->db->select('o.order_id,o.payment_id,o.total,o.date,o.no_items,o.status,cp.nickname
-        ,TIMESTAMPDIFF(SECOND,o.date,now()) as seconds,oc.is_refunded, o.order_type');
+        ,TIMESTAMPDIFF(SECOND,o.date,now()) as seconds,oc.is_refunded, o.order_type, crp.corp_name');
         $this->db->from('order as o');
         $this->db->join('consumer_profile as cp', 'o.consumer_id = cp.uid', 'left');
         $this->db->join('order_charge as oc', 'oc.order_id = o.order_id', 'left');
+        $this->db->join('corp as crp', 'crp.corp_id = o.order_corp_id', 'left');
         $this->db->where('o.status !=', 0);
         if ($param['order_status'] == "completed") {
             $this->db->where('o.status', 3);
@@ -471,11 +472,11 @@ class M_site extends CI_Model {
         ,o.note,o.subtotal,o.tip_amount,o.tax_amount,o.points_dollar_amount
         ,TIMESTAMPDIFF(SECOND,o.date,now()) as seconds,oc.is_refunded
         ,o.delivery_charge_amount,o.promotion_code,o.promotion_discount_amount, deliv.delivery_instruction
-        ,cd.location_abbr as delivery_address ,cd.delivery_time,cd.driver_pickup_time, o.consumer_delivery_id, o.no_items, o.pd_charge_amount');
+        ,cd.location_abbr as delivery_address ,cd.delivery_time,cd.driver_pickup_time, cd.corp_name, o.consumer_delivery_id, o.no_items, o.pd_charge_amount');
             $this->db->from('order as o');
             $this->db->join('consumer_profile as cp', 'o.consumer_id = cp.uid', 'left');
             $this->db->join('order_charge as oc', 'oc.order_id = o.order_id', 'left');
-            $this->db->join('corp as cd', 'corp_id = o.consumer_delivery_id', 'left');
+            $this->db->join('corp as cd', 'cd.corp_id = o.order_corp_id', 'left');
             $this->db->join('consumer_delivery as deliv', 'deliv.consumer_id = o.consumer_id', 'left');
             $this->db->where('o.order_id', $order_id);
 //        if ($p_sub_businesses == "") {

@@ -124,6 +124,7 @@ class MerchantNotification extends CI_Controller {
 
             $email['consumer_delivery_id'] = $order_info[0]['consumer_delivery_id'];
             $email['business_name'] = ""; //in here we don't need to pass business name
+            $email['parent_corp'] = $order_info[0]['parent_corp'];
 
             //zzz
 //            $business_email = "test-hjmwu@mail-tester.com";

@@ -111,8 +111,14 @@ Table::create(array(
             "cssStyle"=>"width:200px"
         ),
         "Order ID"=>array(
+            "cssStyle"=>"width:40px",
+            "type"=>"text"
 //                    "cssStyle"=>"font-size: 11px",
         ),
+                "Status"=>array(
+                    "cssStyle"=>"width:40px"
+        //                    "cssStyle"=>"font-size: 11px",
+                ),
         "Sub Total"=>array(
             "cssStyle"=>"width:80px",
             "type"=>"number",
@@ -127,19 +133,19 @@ Table::create(array(
             "cssStyle"=>"width:200px"
         ),
         "Nick Name"=>array(
-            "cssStyle"=>"width:100px"
+            "cssStyle"=>"width:70px"
 
         ),
         "Email"=>array(
-            "cssStyle"=>"width:100px"
+            "cssStyle"=>"width:90px"
 
         ),
         "Phone"=>array(
-            "cssStyle"=>"width:100px"
+            "cssStyle"=>"width:90px"
 
         ),
         "Last 4 Digits"=>array(
-            "cssStyle"=>"width:80px"
+            "cssStyle"=>"width:60px"
 
         )
     )

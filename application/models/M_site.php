@@ -45,7 +45,7 @@ class M_site extends CI_Model {
         $TapInServerConstsParentPath = server_api_directory(). '/include/consts_server.inc';
         require_once $TapInServerConstsParentPath; // Loads our consts
 //        use Twilio\Rest\Client;
-        $query = "SELECT `o`.`order_id`,`o`.business_id,`bc`.`sms_no`,(TIMESTAMPDIFF(second ,date ,now())) as secound,bc.uuid,bc.used_for_cron,bc.email FROM (SELECT * FROM `order` ORDER BY `order`.`order_id` DESC ) as o LEFT JOIN business_internal_alert as bc on bc.business_id=o.business_id where (TIMESTAMPDIFF(second ,date ,now())) > 300 and `o`.`status`='1' group by `o`.`business_id` ORDER BY `bc`.`used_for_cron` DESC";
+        $query = "SELECT `o`.`order_id`,`o`.business_id,o.`corp_id`, `bc`.`sms_no`,(TIMESTAMPDIFF(second ,date ,now())) as secound,bc.uuid,bc.used_for_cron,bc.email FROM (SELECT * FROM `order` ORDER BY `order`.`order_id` DESC ) as o LEFT JOIN business_internal_alert as bc on bc.business_id=o.business_id where (TIMESTAMPDIFF(second ,date ,now())) > 300 and `o`.`status`='1' group by `o`.`business_id` ORDER BY `bc`.`used_for_cron` DESC";
         $result = $this->db->query($query);
         $row = $result->result_array();
 
@@ -91,13 +91,14 @@ class M_site extends CI_Model {
 
                 foreach ($business_email_array as $business_email) {
 
-                    $this->new_order_email($row[$i]['order_id'], $business_email, $row[$i]["business_id"]);
+                    $this->new_order_email($row[$i]['order_id'], $business_email, $row[$i]["business_id"],
+                        $row[$i]["corp_id"]);
                 }
             }
         }
     }
 
-    function new_order_email($order_id, $business_email, $business_id) {
+    function new_order_email($order_id, $business_email, $business_id, $corp_id) {
 //        $order_payment_detail = $this->get_order_payment_detail($order_id);
 //        $order_info = $this->get_ordelist_order($order_id, $business_id, ""); //TODO
 //        $email['order_detail'] = $this->get_order_detail($order_id);
@@ -472,7 +473,8 @@ class M_site extends CI_Model {
         ,o.note,o.subtotal,o.tip_amount,o.tax_amount,o.points_dollar_amount
         ,TIMESTAMPDIFF(SECOND,o.date,now()) as seconds,oc.is_refunded
         ,o.delivery_charge_amount,o.promotion_code,o.promotion_discount_amount, deliv.delivery_instruction
-        ,cd.location_abbr as delivery_address ,cd.delivery_time,cd.driver_pickup_time, cd.corp_name, o.consumer_delivery_id, o.no_items, o.pd_charge_amount');
+        ,cd.location_abbr as delivery_address ,cd.delivery_time,cd.driver_pickup_time, cd.`parent_corp`, cd.corp_name
+        , o.order_corp_id, o.consumer_delivery_id, o.no_items, o.pd_charge_amount');
             $this->db->from('order as o');
             $this->db->join('consumer_profile as cp', 'o.consumer_id = cp.uid', 'left');
             $this->db->join('order_charge as oc', 'oc.order_id = o.order_id', 'left');
@@ -2003,5 +2005,22 @@ class M_site extends CI_Model {
         $result = $this->db->get();
         $row = $result->row_array();
         return $row;
+    }
+
+    function get_sister_corp_ids($corp_id) {
+        $query = "select corp_id from corp where parent_corp = (select parent_corp from corp where corp_id = $corp_id)";
+        $resultArr = $this->db->query($query);
+        $result = $resultArr->row_array();
+
+        return ($result[0]);
+    }
+
+    // the parent name is part of the directory (url) of the merchant site
+    function get_parent_corp_name($corp_id) {
+        $query = "select parent_corp from corp_id = $corp_id)";
+        $resultArr = $this->db->query($query);
+        $result = $resultArr->row_array();
+
+        return ($result[0]);
     }
 }

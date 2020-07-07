@@ -12,9 +12,10 @@ class AdminOrders extends BaseReport
     /* corp with the name of tapforall has all the business ids that use for all the corps*/
     function setup()
     {
-        $this->src('Corp')
+
+    $this->src('Corp')
         ->query("SELECT
-    order_id AS 'Order ID',
+    order_id AS 'Order ID', o.status As Status,
     b.`name` AS Merchant,
     c.nickname AS 'Nick Name',
     c.email1 AS Email,
@@ -28,8 +29,8 @@ FROM
     LEFT JOIN business_customers b ON b.businessID = o.business_id
     LEFT JOIN consumer_profile c ON c.uid = o.consumer_id
 WHERE
-    o.STATUS = :status
-    AND  FIND_IN_SET(o.business_id,(SELECT merchant_ids FROM `corp` WHERE corp_name = 'CCCFM Walnut Creek Market 2020'))
+    o.STATUS in (:status)
+    AND  o.business_id in (SELECT merchant_ids FROM `corp` WHERE `corp`.parent_corp = 'cccfm')
     and  ( (CAST(o.date AS DATE)) <= :endDate and (CAST(o.date AS DATE)) >= :startDate )
     ORDER BY
     Merchant,

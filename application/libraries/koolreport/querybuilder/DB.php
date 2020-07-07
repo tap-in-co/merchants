@@ -1,8 +1,8 @@
-<?php
+<?php 
 
 namespace koolreport\querybuilder;
 
-class DB
+class DB 
 {
     static function table()
     {
@@ -26,7 +26,7 @@ class DB
                 {
                     $text = preg_replace("/\?/", $value, $text, 1);
                 }
-            }
+            }    
         }
         return array("[{raw}]",$text);
     }
@@ -34,8 +34,8 @@ class DB
     {
         $search = array("\\",  "\x00", "\n",  "\r",  "'",  '"', "\x1a");
         $replace = array("\\\\","\\0","\\n", "\\r", "\'", '\"', "\\Z");
-
+    
         return str_replace($search, $replace, $string);
     }
-
+    
 }

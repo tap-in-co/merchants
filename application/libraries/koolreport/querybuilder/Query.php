@@ -401,7 +401,7 @@ class Query
         }
         return $this;
     }
-
+    
 
     //Exists
     public function whereExists($table)
@@ -442,7 +442,7 @@ class Query
         array_push($this->conditions, DB::raw($raw, $params));
         return $this;
     }
-
+    
 
     //------------------//
     public function orderBy()
@@ -679,7 +679,7 @@ class Query
         $this->values[$name] = array($name,"+",$value);
         return $this;
     }
-
+    
     public function delete()
     {
         $this->type = "delete";

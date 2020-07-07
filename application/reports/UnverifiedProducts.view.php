@@ -85,41 +85,29 @@ Table::create(array(
         "tr"=>"cssItem"
     ),
     "columns"=>array(
-        "Merchant"=>array(
-            "cssStyle"=>"width:200px"
+        "Business Name"=>array(
+            "cssStyle"=>"width:75px"
         ),
-        "Order ID"=>array(
+        "Product Name"=>array(
 //                    "cssStyle"=>"font-size: 11px",
+           "cssStyle"=>"width:120px"
         ),
-        "Sub Total"=>array(
-            "cssStyle"=>"width:80px",
-            "type"=>"number",
-            "label"=>"Amount in USD",
-            "decimals"=>2,
-            "prefix"=>"$ "
-        ),
-        "Reject Reason"=>array(
-            "cssStyle"=>"width:200px"
-        ),
-        "Payment Error"=>array(
-            "cssStyle"=>"width:200px"
-        ),
-        "Nick Name"=>array(
-            "cssStyle"=>"width:100px"
 
+        "Short Description"=>array(
+    //                    "cssStyle"=>"font-size: 11px",
+           "cssStyle"=>"width:200px"
         ),
-        "Email"=>array(
-            "cssStyle"=>"width:100px"
 
-        ),
-        "Phone"=>array(
-            "cssStyle"=>"width:100px"
+            "Category"=>array(
+        //                    "cssStyle"=>"font-size: 11px",
+               "cssStyle"=>"width:50px"
+            ),
 
-        ),
-        "Last 4 Digits"=>array(
-            "cssStyle"=>"width:80px"
+                "Modification Time"=>array(
+            //                    "cssStyle"=>"font-size: 11px",
+                   "cssStyle"=>"width:50px"
+                )
 
-        )
     )
 ));
 ?>

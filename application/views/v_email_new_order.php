@@ -342,7 +342,8 @@ $parent_url =  dirname(base_url()) ."/";
                                 <tr style="line-height: 0;">
                                     <td  colspan="2">
 
-                                        <p style="font-weight: bold;font-size: 21px;margin-left: 10px;text-align: center"><a href="<?php echo $parent_url."".$order_detail[0]['main_business_name']; ?>" target="_blank" >View</a></p>
+                                        <p style="font-weight: bold;font-size: 21px;margin-left: 10px;text-align: center">
+                                            <a href="<?php echo $parent_url."".$parent_corp."/".$order_detail[0]['main_business_name']; ?>" target="_blank" >View</a></p>
                                     </td>
 
                                 </tr>

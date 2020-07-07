@@ -1,0 +1,6 @@
+RewriteOptions inherit
+
+setEnv DB_Host      production-tap4markets.cbiqjablh73y.us-west-2.rds.amazonaws.com
+setEnv DB_Name      prod_tap4markets
+setEnv DB_Username  admin
+setEnv DB_Password  rdsMyTMA123??

@@ -46,11 +46,13 @@ WHERE
 
     protected function defaultParamValues()
     {
+        $defaultEndDate = date("Y-m-d");
+        $defaultStartDate = date("Y-m-d", strtotime("-1 months"));
         return array(
             "status"=>1,
             "dateRange"=>array(
-                date("Y-m-d"),
-                date("Y-m-d")
+                $defaultStartDate,
+                $defaultEndDate
             )
         );
     }

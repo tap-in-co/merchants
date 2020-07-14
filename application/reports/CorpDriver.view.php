@@ -28,7 +28,7 @@ use \koolreport\inputs\DateRangePicker;
 <html>
     <?php include('v_header_report.php'); ?>
     <head>
-        <title>Tap-in Drivers' Report</title>
+        <title>Tap4Markets Pickup Report</title>
         <style>
             .cssHeader
             {
@@ -44,14 +44,14 @@ use \koolreport\inputs\DateRangePicker;
     </head>
     <body>
         <div align="center">
-            <h2>Drivers' Delivery Report</h2>
+            <h2>Pickup Report</h2>
 <!--            <h3>Orders for <script> document.write(new Date().toLocaleDateString()); </script> </h3>-->
         </div>
 
 
 
         <div class="text-center">
-        <h1>List of order</h1>
+        <h1>List of Orders to Pickup</h1>
         <h4>Choose a date to view orders</h4>
         </div>
         <form method="post">
@@ -93,12 +93,12 @@ use \koolreport\inputs\DateRangePicker;
                 "tr"=>"cssItem"
             ),
             "columns"=>array(
-                "Corp"=>array(
+                "Farmers Market"=>array(
                     "cssStyle"=>"width:120px;font-weight:bold;font-size:19"
 
 
                 ),
-                "Merchant"=>array(
+                "Vendor"=>array(
                     "cssStyle"=>"width:200px"
 
                 ),
@@ -107,7 +107,7 @@ use \koolreport\inputs\DateRangePicker;
                     "footer"=>"sum",
                     "footerText"=>"Total: @value"
                 ),
-                "Delivery Time"=>array(
+                "Pickup Time"=>array(
                     "cssStyle"=>"width:70px"
                 ),
                 "Location"=>array(

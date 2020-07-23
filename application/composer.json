@@ -11,7 +11,7 @@
 		"source": "https://github.com/bcit-ci/CodeIgniter"
 	},
 	"require": {
-		"php": ">=5.2.4",
+		"php": ">=7.1",
 		"stripe/stripe-php": "^7.39",
 		"sendgrid/sendgrid": "^7.3",
 		"mikey179/vfsstream": "^1.6",

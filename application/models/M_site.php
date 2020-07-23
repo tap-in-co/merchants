@@ -172,7 +172,12 @@ class M_site extends CI_Model {
         $zzz = $this->db->last_query();
         $validated = false;
         if (count($row) > 0) {
+            //We are using md5 to encrypt but for backwards compatibility we need to check with
+//            codeigniter validation first.
             $validated = password_verify($param['password'], $row[0]["password"]);
+            if (!($validated)) {
+                $validated = (md5($param['password']) == $row[0]["password"]);
+            }
         }
 
         if ($validated) {
@@ -892,16 +897,20 @@ class M_site extends CI_Model {
         $this->db->where('consumer_id', $order_detail['consumer_id']);
         $this->db->delete('points');
 
-        $this->db->select('device_token');
+        $this->db->select('device_token, email1, sms_no');
         $this->db->from('consumer_profile');
         $this->db->where('uid', $order_detail['consumer_id']);
         $this->db->limit(1);
         $result = $this->db->get();
         $row = $result->result_array();
 
+        if (empty($reject_reason)) {
+            $reject_reason  = "could not be fulfilled at this time.";
+        }
+
         if (count($row) > 0) {
             $device_token = $row[0]['device_token'];
-            $messageToConsumer = "Your order #" . $order_id . " could not be fulfilled at this time.";
+            $messageToConsumer = "Your order #" . $order_id . ": ". $reject_reason;
             $message_body = array(
                 'type' => "5",
                 'business_id' => is_login(),
@@ -910,6 +919,7 @@ class M_site extends CI_Model {
                 'sound' => 'newMessage.wav'
             );
             push_notification_ios($device_token, $message_body);
+            sendSMS($messageToConsumer, $row[0]['sms_no']);
 
             log_message('info', "****Rejected  order: $order_id for $device_token");
 

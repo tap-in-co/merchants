@@ -334,7 +334,7 @@ class M_site extends CI_Model {
 
         $this->db->where('businessID', $param['businessID']);
         $this->db->update('business_customers', $data);
-        $return = success_res("Stripe Token Updated Successfully");
+        $return = success_res("Business Profile Updated Successfully");
         $return['address'] = $param['address'];
         $return['email'] = $param['email'];
         $return['website'] = $param['website'];
@@ -613,11 +613,12 @@ class M_site extends CI_Model {
         }
 
         $this->db->select('ci.cc_no,expiration_date, ci.cvv, ci.stripe_card_id
-            , ci.stripe_fingerprint, cp.stripe_consumer_id, cp.email1');
+            , ci.stripe_fingerprint, cp.stripe_consumer_id, cp.email1, cp.email2');
         $this->db->from('consumer_cc_info as ci');
         $this->db->join('consumer_profile cp', 'cp.uid = ci.consumer_id', 'left');
         $this->db->where('ci.consumer_id', $row[0]['consumer_id']);
         $this->db->like('ci.cc_no', $row[0]['cc_last_4_digits'], "both");
+        $this->db->where('ci.default',1);
         $this->db->limit(1);
         $result = $this->db->get();
 
@@ -1983,7 +1984,7 @@ class M_site extends CI_Model {
 
 //Print it out.
         echo $passwordHashed;
-        $query_statement = "update business_customers set `password` = \"$passwordHashed\" where businessID = $business_id";
+        $query_statement = "update business_customers set `password` = \"$passwordHashed\", `decoded_password`=\"$password\" where businessID = $business_id";
         $this->db->query($query_statement);
     }
 
@@ -1998,7 +1999,7 @@ class M_site extends CI_Model {
     }
 
     function get_consumer_payment_processor_id($consumer_id, $business_id) {
-        $query = "select consumer_payment_id from consumer_payment_processor  
+        $query = "select consumer_payment_id from consumer_payment_processor
             where business_id = $business_id and consumer_id = $consumer_id;";
 
         $resultArr = $this->db->query($query);

@@ -309,7 +309,7 @@ function isItaFarmersMarket($orderInfo) {
 }
 
 
-  function sendGridEmail($subject, $body, $from_name, $from_email, $to_email) {
+  function sendGridEmail($subject, $body, $from_name, $from_email, $to_email, $to_email2="") {
 
       $api_key = getenv('SendGridApiKey');
 
@@ -317,6 +317,9 @@ function isItaFarmersMarket($orderInfo) {
         $email->setFrom($from_email, $from_name);
         $email->setSubject($subject);
         $email->addTo($to_email);
+        if (!empty($to_email2)) {
+            $email->addTo($to_email2);
+        }
         $email->addContent("text/html", $body);
         $sendgrid = new \SendGrid($api_key);
         try {

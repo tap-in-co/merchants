@@ -315,16 +315,17 @@ class Site extends CI_Controller
                             $order_payment_detail['consumer_id']);
 
                         //save card token in the database
-                        if (empty($order_payment_detail['cc_info']['stripe_fingerprint'])) {
-                            $success_code =
-                                $this->m_site->update_card_info_for_stripe(
-                                    $order_payment_detail['consumer_id'],
-                                    $order_payment_detail['cc_info']['cc_no'],
-                                    $card_id, $fingerprint);
-                            $Success_code = $this->m_site->maskCardInfoFor(
-                                $order_payment_detail['consumer_id'], $order_payment_detail['cc_info']['cc_no']
-                            );
-                        }
+                        //TODO For Now zzz
+//                        if (empty($order_payment_detail['cc_info']['stripe_fingerprint'])) {
+//                            $success_code =
+//                                $this->m_site->update_card_info_for_stripe(
+//                                    $order_payment_detail['consumer_id'],
+//                                    $order_payment_detail['cc_info']['cc_no'],
+//                                    $card_id, $fingerprint);
+//                            $Success_code = $this->m_site->maskCardInfoFor(
+//                                $order_payment_detail['consumer_id'], $order_payment_detail['cc_info']['cc_no']
+//                            );
+//                        }
 
                         $order_info = $this->m_site->get_ordelist_order($order_id, $order_payment_detail['order_type']
                             , $business_id, $param['sub_businesses']);
@@ -347,6 +348,7 @@ class Site extends CI_Controller
                         $email['tax_amount'] = $order_info[0]['tax_amount'];
                         $email['points_dollar_amount'] = $order_info[0]['points_dollar_amount'];
                         $email['delivery_charge_amount'] = $order_info[0]['delivery_charge_amount'];
+                        $email['service_charge'] = $order_info[0]['pd_charge_amount'];
                         $email['promotion_code'] = $order_info[0]['promotion_code'];
 
                         $email['promotion_discount_amount'] = $order_info[0]['promotion_discount_amount'];
@@ -359,7 +361,12 @@ class Site extends CI_Controller
                         $email['delivery_time'] = $order_info[0]['delivery_time'];
                         $email['consumer_delivery_id'] = $order_info[0]['consumer_delivery_id'];
                         if ($order_payment_detail['cc_info']['email1'] != '' && $order_payment_detail['cc_info']['email1'] != NULL) {
-                            $this->mail_receipt($email, $order_payment_detail['cc_info']['email1']);
+
+                            if (!empty($order_payment_detail['cc_info']['email2'])) {
+                                $this->mail_receipt($email, $order_payment_detail['cc_info']['email1'], $order_payment_detail['cc_info']['email2']);
+                            } else {
+                                $this->mail_receipt($email, $order_payment_detail['cc_info']['email1']);
+                            }
                         }
                     } catch (Stripe_CardError $e) {
                         $body = $e->getMessage();
@@ -528,7 +535,7 @@ class Site extends CI_Controller
         $this->email->from($email, 'Tap-in');
     }
 
-    function mail_receipt($data, $email)
+    function mail_receipt($data, $email, $email2="")
     {
 //        $this->email_configration();
         $body = $this->load->view('v_email_receipt', $data, TRUE);
@@ -538,7 +545,7 @@ class Site extends CI_Controller
 //        $this->email->subject($subject);
 //        $this->email->message($body);
         $site_name = SiteName;
-        sendGridEmail($subject, $body, $site_name, "Tap-In@tapforall.com", $email);
+        sendGridEmail($subject, $body, $site_name, "Tap-In@tapforall.com", $email, $email2);
 
 //        if($this->email->send()) {
 //            $this->session->set_flashdata("email_sent", "Email sent successfully.");

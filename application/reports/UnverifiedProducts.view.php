@@ -19,7 +19,7 @@
         </div>
 <html>
 <head>
-    <title>Unverified Products Report</title>
+    <title>Unverified Products</title>
     <?php include('v_header_report.php'); ?>
     <style>
         .cssHeader

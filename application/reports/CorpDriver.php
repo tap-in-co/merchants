@@ -33,8 +33,10 @@ class CorpDriver extends BaseReport
     function setup()
     {
         $this->src('Corp')
-        ->query("select corp.corp_name as 'Farmers Market', b.`name` as 'Vendor', cp.nickname as 'Nick Name', o.order_id as 'Order ID'
-					, o.no_items as 'No. of Items', corp.location_abbr as 'Location', corp.delivery_time as 'Pickup Time'
+        ->query("select corp.corp_name as 'Farmers Market', b.`name` as 'Vendor'
+                    , cp.nickname as 'Nick Name', cp.email1 as 'Email', o.order_id as 'Order ID'
+					, o.no_items as 'No. of Items', corp.location_abbr as 'Location'
+					, corp.delivery_time as 'Pickup Time'
 					, o.note as 'Order Note', o.pd_instruction as 'Delivery Instruction' from `order` o
                     left join corp corp on corp.corp_id = o.order_corp_id
                     left join consumer_profile cp on cp.uid = o.consumer_id

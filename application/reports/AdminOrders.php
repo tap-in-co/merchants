@@ -29,8 +29,8 @@ FROM
     LEFT JOIN business_customers b ON b.businessID = o.business_id
     LEFT JOIN consumer_profile c ON c.uid = o.consumer_id
 WHERE
-    o.STATUS in (:status)
-    AND  o.business_id in (SELECT merchant_ids FROM `corp` WHERE `corp`.parent_corp = 'cccfm')
+    FIND_IN_SET (o.STATUS, :status)
+    AND find_in_set (o.business_id, (SELECT merchant_ids FROM `corp` WHERE corp_id in ('1,2')))
     and  ( (CAST(o.date AS DATE)) <= :endDate and (CAST(o.date AS DATE)) >= :startDate )
     ORDER BY
     Merchant,

@@ -188,6 +188,19 @@ function limit_text($text, $limit) {
                                     <h1 style="text-align: right;margin-right: 10px">$<?php echo $tip_amount; ?></h1>
                                 </td>
                             </tr>
+
+                            <tr style="line-height: 0">
+                                <td>
+                                    <p style="font-weight: bold;font-size: 20px;margin-left: 10px">Service charge</p>
+                                </td>
+                                <td>
+                                    <h1 style="text-align: right;margin-right: 10px">$<?php echo $service_charge; ?></h1>
+                                </td>
+                            </tr>
+
+
+
+
                             <tr style="line-height: 0">
                                 <td >
                                     <p style="font-weight: bold;font-size: 20px;margin-left: 10px">Points</p>
@@ -202,7 +215,8 @@ function limit_text($text, $limit) {
                                         } else {
                                             echo $points_dollar_amount;
                                         }
-                                        ?></h1>
+                                        ?>
+                                    </h1>
 
                                 </td>
                             </tr>

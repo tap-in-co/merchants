@@ -33,7 +33,7 @@ class Profile extends CI_Controller {
         $param = $_REQUEST;
         $param['businessID'] = is_login();
         $this->validation->is_parameter_blank('businessID', $param['businessID']);
-        $this->validation->is_parameter_blank('address', $param['address']);
+//        $this->validation->is_parameter_blank('address', $param['address']);
 //        $this->validation->is_parameter_blank('email', $param['email']);
 //        $this->validation->is_parameter_blank('website', $param['website']);
 //        $this->validation->is_parameter_blank('phone', $param['phone']);

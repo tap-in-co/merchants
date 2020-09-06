@@ -241,7 +241,7 @@
                                     <div class="form-group">
                                         <label for="address" class="col-sm-4 control-label form-label">Address</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="address" name="address" required>
+											<input type="text" class="form-control" id="address" name="address">
                                         </div>
                                     </div>
                                     <div class="form-group">

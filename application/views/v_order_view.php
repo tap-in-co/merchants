@@ -76,9 +76,9 @@ error_reporting(0);
             </div>
             <div class="col-md-6  padding-0 text-right text-right1" >
 <!--                --><?php //if ($orderlist[0]['delivery_charge_amount'] > 0) {?>
-                    <span class="delivery_time">Have order ready at : <b><?php echo $pickup_date ?> </b></span>
+                    <span class="delivery_time">Have order ready at : <b><?php echo $orderlist[0]['pickup_date'] ?> </b></span>
                     <br>
-                    <span class="delivery_address">Delivery Address : <b><?php echo $pickup_location; ?></b> </span>
+                    <span class="delivery_address">Delivery Address : <b><?php echo $orderlist[0]['delivery_address']; ?></b> </span>
                     <br>
                     <span class="delivery_note">Delivery Instruction : <b><?php echo $orderlist[0]['delivery_instruction']; ?></b> </span>
                 <?php if ($orderlist[0]['pd_mode'] == 1) {

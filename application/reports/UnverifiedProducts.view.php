@@ -34,7 +34,8 @@
         }
     </style>
 </head>
-<body>
+<body style="background-color:white;">
+
 <div align="center">
      <h1>Tap4Markets</h1>
     <h3>Unverified Products Report</h3>

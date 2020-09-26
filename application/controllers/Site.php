@@ -132,24 +132,6 @@ class Site extends CI_Controller
             // $order_detail['consumer'] = array();
 //            $data['orderlist'] = null;
         }
-//TODO
-        $data['order_corp_id'] = 1;
-        if (isItaFarmersMarket($data)) {
-            $corp_info = $this->m_site->get_corp_info($data['order_corp_id']);
-            $order_detail['pickup_location'] = $corp_info['location_abbr'];
-            $no_days = $corp_info['cutoff_no_days'];
-            $week_day = $corp_info['delivery_week_days'];
-            calc_pickup_cutoff_date($dateArr, $week_day, $no_days);
-
-            $time_string =  date('h:i', strtotime($corp_info["delivery_time"]));
-            $order_detail['pickup_date'] = $dateArr["pickup_date"] . " " . $time_string;
-            $time_string =  date('h:i', strtotime($corp_info["cutoff_time"]));
-            $order_detail['cutoff_date']= $dateArr["cutoff_date"] . " " . $time_string;
-        } else {
-            $order_detail['order_view']['cutoff_date'] = "";
-            $order_detail['pickup_date'] = "";
-            $order_detail['pickup_location'] = "";
-        }
 
         $data['order_view'] = $this->load->view('v_order_view', $order_detail, TRUE);
         $this->load->view('v_orderlist', $data);
@@ -176,29 +158,9 @@ class Site extends CI_Controller
             return;
         }
         $order_detail['order_detail'] = $this->m_site->get_order_detail($data['orderlist'][0]['order_id']);
-        // order_type TODO
-        if (empty($data['orderlist'][0]['order_type'])) {
-            $order_type = 1;
-        } else {
-            $order_type = $data['orderlist'][0]['order_type'];
-        }
+
+        $order_type = $data['orderlist'][0]['order_type'];
         $order_detail['orderlist'] = $this->m_site->get_ordelist_order($data['orderlist'][0]['order_id'], $order_type, $param['businessID'], $param['sub_businesses']);
-        $dateArr = array();
-        //TODO
-        $data['order_corp_id'] = 1;
-        if (isItaFarmersMarket($data)) {
-            $corp_info = $this->m_site->get_corp_info($data['order_corp_id']);
-            $order_detail['pickup_location'] = $corp_info['location_abbr'];
-            $no_days = $corp_info['cutoff_no_days'];
-            $week_day = $corp_info['delivery_week_days'];
-            calc_pickup_cutoff_date($dateArr, $week_day, $no_days);
-            $order_detail['order_detail']['pickup_date'] = $dateArr['pickup_date'];
-            $order_detail['order_detail']['pickup_date'] = $dateArr['cutoff_date'];
-        } else {
-            $order_detail['order_view']['cutoff_date'] = "";
-            $order_detail['pickup_date'] = "";
-            $order_detail['pickup_location'] = "";
-        }
         $data['order_view'] = $this->load->view('v_order_view', $order_detail, TRUE);
 
         $this->load->view('v_orderlist', $data);
@@ -217,17 +179,17 @@ class Site extends CI_Controller
         $data['orderlist'] = $this->m_site->get_ordelist_order($order_id, $order_type, $param['businessID'], $param['sub_businesses']);
         $data['consumer'] = $this->m_site->check_birthday_first_order($order_id);
         $data['order_detail']['corp_name'] = $data['orderlist'][0]['corp_name'];
-        $dateArr = array();
-        //TODO
-        $data['corp_id'] = 1;
-        if (isItaFarmersMarket($data)) {
-            $corp_info = $this->m_site->get_corp_info($data['corp_id']);
-            $no_days = $corp_info['cutoff_no_days'];
-            $week_day = $corp_info['delivery_week_days'];
-            calc_pickup_cutoff_date($dateArr, $week_day, $no_days);
-            $data['order_view']['pickup_date'] = $dateArr['pickup_date'];
-            $data['order_view']['pickup_date'] = $dateArr['cutoff_date'];
-        }
+//        $dateArr = array();
+//
+//        if (isItaFarmersMarket($data)) {
+//            $order_corp_id = $data['orderlist'][0]['order_corp_id'];
+//            $corp_info = $this->m_site->get_corp_info($order_corp_id);
+//            $no_days = $corp_info['cutoff_no_days'];
+//            $week_day = $corp_info['delivery_week_days'];
+//            calc_pickup_cutoff_date($dateArr, $week_day, $no_days);
+//            $data['order_view']['pickup_date'] = $dateArr['pickup_date'];
+////            $data['order_view']['cutoff_date'] = $dateArr['cutoff_date'];
+//        }
         $return['order_view'] = $this->load->view('v_order_view', $data, TRUE);
         echo json_encode($return);
     }

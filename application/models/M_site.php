@@ -194,7 +194,7 @@ class M_site extends CI_Model {
     }
 
     function admin_do_login($param) {
-        $this->db->select('role_name, username, roles');
+        $this->db->select('role_id, corp_ids, username');
         $this->db->from('tap_in_users');
         $this->db->limit(1);
         $this->db->where('username', $param['username']);
@@ -205,7 +205,20 @@ class M_site extends CI_Model {
 
         if (count($row) > 0) {
             $return = success_res("");
-            $this->session->set_userdata($row[0]);
+            $corp_arr = str_getcsv($row[0]['corp_ids']);
+            $this->db->select('delivery_week_days, cutoff_no_days');
+            $this->db->from('corp');
+            $this->db->limit(1);
+            $this->db->where('corp_id', $corp_arr[0]);
+            $corp_result = $this->db->get();
+            $corp_row = $corp_result->result_array();
+
+            $dateArr = array();
+//          $data['dates'] = $dateArr;
+            calc_pickup_cutoff_date($dateArr, $corp_row[0]['delivery_week_days'], $corp_row[0]['cutoff_no_days']);
+            $data['corp_dates'] = $dateArr;
+            $data['corp_ids'] = $row[0]['corp_ids'];
+            $this->session->set_userdata($data);
 
         } else {
             $return = error_res("Username or password incorrect");
@@ -397,8 +410,8 @@ class M_site extends CI_Model {
     }
 
     function get_business_order_list($param) {
-        $this->db->select('o.order_id,o.payment_id,o.total,o.date,o.no_items,o.status,cp.nickname
-        ,TIMESTAMPDIFF(SECOND,o.date,now()) as seconds,oc.is_refunded, o.order_type, crp.corp_name');
+        $this->db->select('o.order_id,o.payment_id,o.total,o.date,o.no_items,o.status,o.pickup_date, o.order_corp_id
+        , cp.nickname, TIMESTAMPDIFF(SECOND,o.date,now()) as seconds,oc.is_refunded, o.order_type, crp.corp_name');
         $this->db->from('order as o');
         $this->db->join('consumer_profile as cp', 'o.consumer_id = cp.uid', 'left');
         $this->db->join('order_charge as oc', 'oc.order_id = o.order_id', 'left');
@@ -474,7 +487,7 @@ class M_site extends CI_Model {
             $this->db->limit(1);
         } else {
             $this->db->select('o.order_id,o.payment_id,o.total,o.date,cp.nickname, o.pd_mode, o.pd_time,
-        cp.sms_no,cp.uid,o.status
+        cp.sms_no,cp.uid,o.status, o.pickup_date, o.order_corp_id
         ,o.note,o.subtotal,o.tip_amount,o.tax_amount,o.points_dollar_amount
         ,TIMESTAMPDIFF(SECOND,o.date,now()) as seconds,oc.is_refunded
         ,o.delivery_charge_amount,o.promotion_code,o.promotion_discount_amount, deliv.delivery_instruction
@@ -505,18 +518,17 @@ class M_site extends CI_Model {
     }
 
     function get_order_detail($order_id) {
-
-
         $this->db->select('o.order_item_id,o.price,o.quantity,o.item_note,p.name,p.short_description,o.option_ids
             ,o.product_id,p.businessID,bc.short_name as business_name,bc.name as product_business_name');
         $this->db->from('order_item as o');
         $this->db->join('product as p', 'o.product_id = p.product_id', 'left');
         $this->db->join('business_customers as bc', 'bc.businessID = p.businessID', 'left');
-
         $this->db->where('o.order_id', $order_id);
         $result = $this->db->get();
         $row = $result->result_array();
         $zzz = $this->db->last_query();
+
+
         $this->db->select('bc.name');
         $this->db->select('bc.username');
         $this->db->from('order as o');

@@ -1,0 +1,8 @@
+Order Deny,Allow
+Options -Indexes
+DirectoryIndex ./index.php	
+
+AuthType Basic
+AuthName "Restricted access"
+require valid-user
+AuthUserFile "/home/.htpasswds/admin_passwd"

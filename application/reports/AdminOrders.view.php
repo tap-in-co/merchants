@@ -13,8 +13,18 @@
 use \koolreport\widgets\koolphp\Table;
 use \koolreport\inputs\TextBox;
 use \koolreport\inputs\DateRangePicker;
-use \koolreport\Select2;
+use \koolreport\inputs\Select2;
+use \koolreport\inputs\MultiSelect;
 
+
+$statusName = "";
+$this->dataStore("status")->popStart();
+while($row=$this->dataStore("status")->pop())
+{
+    if ( $row["status_id"] == $this->params["status"] ) {
+       $status_name = $row["status_name"];
+    }
+}
 ?>
 <html>
 <head>
@@ -60,26 +70,20 @@ use \koolreport\Select2;
         <div class="col-md-8 col-md-offset-2">
             <div class="form-group">
                 <h4>Choose order status</h4>
-                <?php TextBox::create(array(
-                    "name" => "statusInput"
-                )); ?>
-
-
-                <!--                --><?php
-                //                MultiSelect::create(array(
-                //                    "name"=>"customers",
-                //                    "dataStore"=>$this->dataStore("corp_orders"),
-                //                    "dataBind"=>array(
-                //                        "text"=>"customerName",
-                //                        "value"=>"customerNumber",
-                //                    ),
-                //                    "attributes"=>array(
-                //                        "class"=>"form-control",
-                //                        "size"=>10,
-                //                    )
-                //                ));
-                //                ?>
-
+                <?php
+                    Select2::create (array(
+                        "name"=>"status",
+                        "dataStore"=>$this->dataStore("status"),
+                        "dataBind"=>array(
+                            "text"=>"status_name",
+                            "value"=>"status_id",
+                        ),
+                      "attributes"=>array(
+                            "class"=>"form-control",
+                            "size"=>10,
+                        )
+                    ));
+                ?>
 
             </div>
             <div class="form-group text-center">
@@ -135,7 +139,7 @@ Table::create(array(
         "Payment Error" => array(
             "cssStyle" => "width:200px"
         ),
-        "Nick Name" => array(
+        "Name" => array(
             "cssStyle" => "width:70px"
 
         ),

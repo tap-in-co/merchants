@@ -229,10 +229,10 @@ function calc_pickup_cutoff_date(&$dateArr, $int_weekday, $no_days) {
             $weekday = "wednesday";
             break;
         case 4:
-            $weekday = "Thursday";
+            $weekday = "thursday";
             break;
         case 5:
-            $weekday = "Friday";
+            $weekday = "friday";
             break;
         case 6:
             $weekday = "saturday";
@@ -276,6 +276,12 @@ function calc_pickup_cutoff_date(&$dateArr, $int_weekday, $no_days) {
 
     $dateArr['pickup_date'] = $pickup_date;
     $dateArr['cutoff_date'] = $cutoff_date;
+
+    $start_date = $dateArr['cutoff_date'];
+    $strDate = "$start_date " . "-7 day";
+    $dateArr['order_start_date'] = date("m/d/y", strtotime($strDate));
+    $dateArr['order_end_date'] = $dateArr['cutoff_date'];
+
 } //function
 
 function isItaDeliveryOrder($orderInfo)
@@ -296,10 +302,10 @@ function isItaDeliveryOrder($orderInfo)
 function isItaFarmersMarket($orderInfo) {
     $returnVal = false;
 
-    if ( (empty($orderInfo)) || empty(($orderInfo['order_corp_id'])) ) {
+    if ( (empty($orderInfo)) || empty(($orderInfo['orderlist'][0]['order_corp_id'])) ) {
         $returnVal = false;
     } else {
-        if ($orderInfo['order_corp_id'] > 0 ) {
+        if ( $orderInfo['orderlist'][0]['order_corp_id'] > 0 ) {
             $returnVal = true;
         }
     }
